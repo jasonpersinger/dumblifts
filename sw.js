@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dumblifts-v8';
+const CACHE_NAME = 'dumblifts-v9';
 
 // Firebase URLs — bypass cache (Firestore has its own offline persistence)
 const FIREBASE_DOMAINS = [
