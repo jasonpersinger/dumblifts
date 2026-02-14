@@ -320,6 +320,48 @@
   .info-card ul { padding-left: 18px; }
   .info-card li { margin-bottom: 4px; }
 
+  /* ── Progress Charts ── */
+  .progress-chart {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .progress-chart h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .progress-chart svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .chart-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+  }
+  .chart-legend-swatch {
+    width: 12px;
+    height: 3px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
   /* ── Hidden sections ── */
   .section { display: none; }
   .section.active { display: block; }
@@ -369,7 +411,7 @@
 <body>
 
 <div class="header">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 160">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 730 160">
     <rect x="62" y="68" width="70" height="14" rx="7" fill="#F17300"/>
     <rect x="34" y="42" width="36" height="66" rx="7" fill="#F17300"/>
     <rect x="14" y="50" width="28" height="50" rx="5" fill="#F17300"/>
@@ -553,6 +595,92 @@ function renderHistory() {
   sec.innerHTML = html;
 }
 
+function renderProgressChart(workoutLabel, exercises, colors, history) {
+  const entries = history.filter(h => h.type === workoutLabel);
+  if (entries.length < 2) return '';
+
+  const pad = { top: 16, right: 16, bottom: 28, left: 38 };
+  const W = 400, H = 180;
+  const plotW = W - pad.left - pad.right;
+  const plotH = H - pad.top - pad.bottom;
+
+  // Build per-exercise data series: [{name, color, points: [{x, y}]}]
+  const series = exercises.map((ex, i) => {
+    const points = entries.map((entry, idx) => {
+      const found = entry.exercises.find(e => e.name === ex.name);
+      return { x: idx, y: found ? found.weight : null };
+    }).filter(p => p.y !== null);
+    return { name: ex.name, color: colors[i], points };
+  });
+
+  // Compute Y range across all series
+  let allY = [];
+  series.forEach(s => s.points.forEach(p => allY.push(p.y)));
+  if (!allY.length) return '';
+  let minY = Math.min(...allY);
+  let maxY = Math.max(...allY);
+  if (minY === maxY) { minY -= 5; maxY += 5; }
+  const yPad = (maxY - minY) * 0.15;
+  minY = Math.floor((minY - yPad) / 5) * 5;
+  maxY = Math.ceil((maxY + yPad) / 5) * 5;
+  if (minY < 0) minY = 0;
+
+  const n = entries.length;
+  const scaleX = (idx) => pad.left + (n === 1 ? plotW / 2 : (idx / (n - 1)) * plotW);
+  const scaleY = (val) => pad.top + plotH - ((val - minY) / (maxY - minY)) * plotH;
+
+  // Grid lines (horizontal)
+  const gridSteps = 4;
+  let gridSvg = '';
+  for (let i = 0; i <= gridSteps; i++) {
+    const val = minY + (maxY - minY) * (i / gridSteps);
+    const y = scaleY(val);
+    gridSvg += `<line x1="${pad.left}" y1="${y}" x2="${W - pad.right}" y2="${y}" stroke="#1a1a1a" stroke-width="1"/>`;
+    gridSvg += `<text x="${pad.left - 6}" y="${y + 3.5}" text-anchor="end" fill="#8a8478" font-size="10" font-family="Oswald, sans-serif">${Math.round(val)}</text>`;
+  }
+
+  // X axis labels (dates) — show first, last, and a couple in between
+  let xLabelSvg = '';
+  const labelIndices = new Set([0, n - 1]);
+  if (n > 4) labelIndices.add(Math.floor(n / 2));
+  if (n > 8) { labelIndices.add(Math.floor(n / 4)); labelIndices.add(Math.floor(3 * n / 4)); }
+  labelIndices.forEach(idx => {
+    const x = scaleX(idx);
+    // Parse date to short format
+    const raw = entries[idx].date;
+    const parts = raw.split(', ');
+    const short = parts.length >= 2 ? parts[1].replace(/,.*/, '') : raw;
+    xLabelSvg += `<text x="${x}" y="${H - 4}" text-anchor="middle" fill="#8a8478" font-size="9" font-family="Oswald, sans-serif">${short}</text>`;
+  });
+
+  // Lines + dots
+  let linesSvg = '';
+  series.forEach(s => {
+    if (s.points.length < 2) return;
+    const polyPoints = s.points.map(p => `${scaleX(p.x).toFixed(1)},${scaleY(p.y).toFixed(1)}`).join(' ');
+    linesSvg += `<polyline points="${polyPoints}" fill="none" stroke="${s.color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+    s.points.forEach(p => {
+      linesSvg += `<circle cx="${scaleX(p.x).toFixed(1)}" cy="${scaleY(p.y).toFixed(1)}" r="3" fill="${s.color}"/>`;
+    });
+  });
+
+  // Legend
+  const legendHtml = series.map(s =>
+    `<div class="chart-legend-item"><span class="chart-legend-swatch" style="background:${s.color}"></span>${s.name}</div>`
+  ).join('');
+
+  return `
+    <div class="progress-chart">
+      <h3>${workoutLabel} Progress</h3>
+      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">
+        ${gridSvg}
+        ${xLabelSvg}
+        ${linesSvg}
+      </svg>
+      <div class="chart-legend">${legendHtml}</div>
+    </div>`;
+}
+
 function renderStats() {
   const sec = document.getElementById('sec-stats');
   const weekNum = Math.floor(state.totalWorkouts / 3) + 1;
@@ -566,6 +694,12 @@ function renderStats() {
       maxHtml += `<div class="history-exercise" style="padding:4px 0;">${ex.name}: <span style="color:var(--gold);font-weight:600;">${state.weights[ex.id]} ${ex.unit}</span></div>`;
     });
   });
+
+  // Progress charts
+  const chartA = renderProgressChart('Workout A', WORKOUTS.A.exercises,
+    ['#F17300', '#E8943A', '#D4A55A'], state.history);
+  const chartB = renderProgressChart('Workout B', WORKOUTS.B.exercises,
+    ['#7A8B8B', '#5E9BA8', '#8BAAB5'], state.history);
 
   sec.innerHTML = `
     <div class="stats-grid">
@@ -589,7 +723,9 @@ function renderStats() {
     <div class="info-card">
       <h3>Current Weights</h3>
       ${maxHtml}
-    </div>`;
+    </div>
+    ${chartA}
+    ${chartB}`;
 }
 
 // ── Actions ──
