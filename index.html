@@ -896,6 +896,62 @@
   .welcome-start-btn:active {
     transform: scale(0.97);
   }
+
+  /* ── Gear Section ── */
+  .gear-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .gear-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .gear-item:first-of-type {
+    padding-top: 0;
+  }
+  .gear-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    width: 36px;
+    text-align: center;
+  }
+  .gear-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .gear-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .gear-desc {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+  .gear-link {
+    flex-shrink: 0;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--orange);
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 1px solid var(--orange-dim);
+    border-radius: 6px;
+    transition: all 0.15s;
+  }
+  .gear-link:active {
+    background: var(--orange);
+    color: var(--black);
+  }
 </style>
 </head>
 <body>
@@ -1373,6 +1429,35 @@ function renderProgram() {
 
   // Reference divider
   html += '<div class="reference-divider">Reference</div>';
+
+  // Gear recommendations
+  html += `<div class="info-card">
+    <h3>Budget Gear</h3>
+    <div class="gear-item">
+      <span class="gear-icon">🏋️</span>
+      <div class="gear-info">
+        <div class="gear-name">Adjustable Dumbbell Set</div>
+        <div class="gear-desc">All the weight you need to start. Great for home gyms.</div>
+      </div>
+      <a class="gear-link" href="https://www.amazon.com/s?k=adjustable+dumbbell+set&tag=dumblifts-20" target="_blank" rel="noopener">Shop</a>
+    </div>
+    <div class="gear-item">
+      <span class="gear-icon">🪑</span>
+      <div class="gear-info">
+        <div class="gear-name">Flat / Incline Bench</div>
+        <div class="gear-desc">Fold-up style works fine. Opens up bench and incline press.</div>
+      </div>
+      <a class="gear-link" href="https://www.amazon.com/s?k=adjustable+weight+bench+foldable&tag=dumblifts-20" target="_blank" rel="noopener">Shop</a>
+    </div>
+    <div class="gear-item">
+      <span class="gear-icon">🧱</span>
+      <div class="gear-info">
+        <div class="gear-name">Exercise Floor Mat</div>
+        <div class="gear-desc">Protects your floor and your back for floor press and stretching.</div>
+      </div>
+      <a class="gear-link" href="https://www.amazon.com/s?k=thick+exercise+mat+home+gym&tag=dumblifts-20" target="_blank" rel="noopener">Shop</a>
+    </div>
+  </div>`;
 
   // Info cards
   html += `
