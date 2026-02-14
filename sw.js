@@ -1,4 +1,14 @@
-const CACHE_NAME = 'dumblifts-v7';
+const CACHE_NAME = 'dumblifts-v8';
+
+// Firebase URLs — bypass cache (Firestore has its own offline persistence)
+const FIREBASE_DOMAINS = [
+  'firestore.googleapis.com',
+  'identitytoolkit.googleapis.com',
+  'securetoken.googleapis.com',
+  'apis.google.com',
+  'www.googleapis.com',
+  'firebaseinstallations.googleapis.com'
+];
 const ASSETS = [
   '/',
   '/index.html',
@@ -26,8 +36,13 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// Fetch — cache first, fallback to network
+// Fetch — cache first, fallback to network (skip Firebase URLs)
 self.addEventListener('fetch', event => {
+  // Let Firebase handle its own requests (auth, Firestore, etc.)
+  if (FIREBASE_DOMAINS.some(domain => event.request.url.includes(domain))) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;

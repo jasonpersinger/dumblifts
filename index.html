@@ -725,6 +725,66 @@
   .footer-email a:hover {
     color: var(--gold);
   }
+
+  /* ── Auth Bar ── */
+  #auth-bar {
+    margin-top: 10px;
+  }
+  .auth-signin-btn {
+    background: none;
+    border: 1px solid var(--gold-mid);
+    color: var(--gold);
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .auth-signin-btn:hover {
+    border-color: var(--gold);
+    color: var(--text);
+  }
+  .auth-signin-btn:active {
+    background: var(--gold);
+    color: var(--black);
+    transform: scale(0.96);
+  }
+  .auth-user-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .auth-user-photo {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--card-border);
+  }
+  .auth-user-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+  }
+  .auth-signout-btn {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 2px 0;
+    transition: color 0.2s;
+  }
+  .auth-signout-btn:hover {
+    color: var(--gold);
+  }
 </style>
 </head>
 <body>
@@ -740,6 +800,7 @@
     <text x="240" y="110" font-family="Oswald, sans-serif" font-weight="700" font-size="78" fill="#F17300" letter-spacing="8">DUMBLIFTS</text>
   </svg>
   <div class="subtitle">Lift Stupid Heavy</div>
+  <div id="auth-bar"></div>
 </div>
 
 <div class="nav">
@@ -787,7 +848,27 @@
 <div class="rest-timer" id="restTimer" onclick="clearRestTimer()"></div>
 <div class="toast" id="toast"></div>
 
+<script src="https://www.gstatic.com/firebasejs/11.3.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.3.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.3.0/firebase-firestore-compat.js"></script>
+
 <script>
+// ── Firebase Init ──
+firebase.initializeApp({
+  apiKey: "AIzaSyBvYFI-FrC-_-egPi1giGqjUij95Y1Pp0Q",
+  authDomain: "dumblifts-a9751.firebaseapp.com",
+  projectId: "dumblifts-a9751",
+  storageBucket: "dumblifts-a9751.firebasestorage.app",
+  messagingSenderId: "445499232452",
+  appId: "1:445499232452:web:432c8f757f32540aff3991",
+  measurementId: "G-1MD27ZZEC5"
+});
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+// Offline persistence for Firestore (PWA support)
+db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
+
 // ── Exercise Library ──
 const EXERCISE_LIBRARY = [
   // Legs
@@ -874,6 +955,7 @@ buildWorkouts();
 
 function saveState() {
   localStorage.setItem('dumblifts', JSON.stringify(state));
+  syncToFirestore();
 }
 
 // ── Rest Timer State ──
@@ -1552,6 +1634,126 @@ function showToast(msg) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2200);
 }
+
+// ── Auth & Sync ──
+let firestoreDebounceTimer = null;
+
+function syncToFirestore() {
+  if (!auth.currentUser) return;
+  clearTimeout(firestoreDebounceTimer);
+  firestoreDebounceTimer = setTimeout(() => {
+    const uid = auth.currentUser.uid;
+    db.collection('users').doc(uid).set({
+      ...state,
+      lastModified: firebase.firestore.FieldValue.serverTimestamp()
+    }).catch(err => console.log('Firestore sync error:', err));
+  }, 300);
+}
+
+function loadFromFirestore(uid) {
+  return db.collection('users').doc(uid).get().then(doc => {
+    if (doc.exists) {
+      const data = doc.data();
+      delete data.lastModified;
+      return data;
+    }
+    return null;
+  });
+}
+
+function reRenderAll() {
+  buildWorkouts();
+  renderWorkout();
+  renderHistory();
+  renderStats();
+}
+
+function handleAuthStateChange(user) {
+  renderAuthBar();
+  if (!user) return;
+
+  loadFromFirestore(user.uid).then(cloudData => {
+    if (!cloudData) {
+      // No cloud data — upload local state
+      syncToFirestore();
+      return;
+    }
+
+    const localIsEmpty = state.totalWorkouts === 0 && state.history.length === 0;
+    if (localIsEmpty) {
+      // Local is fresh — use cloud data
+      state = cloudData;
+      if (!state.program) state.program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM));
+      saveState();
+      reRenderAll();
+      showToast('Data loaded from cloud');
+      return;
+    }
+
+    const cloudIsEmpty = cloudData.totalWorkouts === 0 && cloudData.history.length === 0;
+    if (cloudIsEmpty) {
+      // Cloud is empty — upload local
+      syncToFirestore();
+      return;
+    }
+
+    // Both have data — ask user
+    if (confirm('Cloud data found (' + cloudData.totalWorkouts + ' workouts). Use cloud data? Cancel to keep local data and overwrite cloud.')) {
+      state = cloudData;
+      if (!state.program) state.program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM));
+      localStorage.setItem('dumblifts', JSON.stringify(state));
+      reRenderAll();
+      showToast('Cloud data loaded');
+    } else {
+      syncToFirestore();
+      showToast('Local data kept');
+    }
+  }).catch(err => console.log('Firestore load error:', err));
+}
+
+function renderAuthBar() {
+  const bar = document.getElementById('auth-bar');
+  if (!bar) return;
+  const user = auth.currentUser;
+  if (user) {
+    const photo = user.photoURL ? `<img class="auth-user-photo" src="${user.photoURL}" alt="" referrerpolicy="no-referrer">` : '';
+    const name = user.displayName || user.email || '';
+    bar.innerHTML = `<div class="auth-user-info">
+      ${photo}
+      <span class="auth-user-name">${name}</span>
+      <button class="auth-signout-btn" onclick="signOutUser()">Sign out</button>
+    </div>`;
+  } else {
+    bar.innerHTML = `<button class="auth-signin-btn" onclick="signInUser()">Sign in with Google</button>`;
+  }
+}
+
+function signInUser() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  // Use redirect in standalone/PWA mode (iOS blocks popups in standalone)
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+  if (isStandalone) {
+    auth.signInWithRedirect(provider);
+  } else {
+    auth.signInWithPopup(provider).catch(err => {
+      if (err.code === 'auth/popup-blocked') {
+        auth.signInWithRedirect(provider);
+      } else {
+        console.log('Sign in error:', err);
+        showToast('Sign in failed');
+      }
+    });
+  }
+}
+
+function signOutUser() {
+  auth.signOut().then(() => {
+    renderAuthBar();
+    showToast('Signed out');
+  });
+}
+
+auth.onAuthStateChanged(handleAuthStateChange);
 
 // ── Init ──
 renderWorkout();
