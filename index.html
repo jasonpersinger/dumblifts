@@ -296,7 +296,7 @@
   }
   .empty-state .icon { font-size: 2.5rem; margin-bottom: 12px; }
 
-  /* ── Info Section ── */
+  /* ── Info / Program Section ── */
   .info-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
@@ -406,6 +406,215 @@
     transform: translateX(-50%) translateY(0);
     opacity: 1;
   }
+
+  /* ── Program Tab ── */
+  .program-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .program-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .program-action-btn {
+    background: var(--gold-dim);
+    border: 1px solid var(--gold-mid);
+    color: var(--gold);
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 6px;
+    transition: all 0.15s;
+  }
+  .program-action-btn:active {
+    background: var(--gold);
+    color: var(--black);
+  }
+  .program-action-btn.remove {
+    border-color: #331111;
+    color: #664444;
+    background: none;
+  }
+  .program-action-btn.remove:active {
+    background: #664444;
+    color: var(--black);
+  }
+  .program-card-exercise {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    padding: 4px 0;
+    display: flex;
+    justify-content: space-between;
+  }
+  .program-card-exercise span {
+    color: var(--gold);
+    font-weight: 500;
+  }
+  .balance-check .balance-badges {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .balance-ok {
+    color: #5a9a5a;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+  }
+  .balance-warn {
+    color: var(--orange);
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+  }
+  .balance-warning-text {
+    margin-top: 8px;
+    color: var(--orange) !important;
+    font-size: 0.78rem !important;
+  }
+  .add-workout-btn {
+    width: 100%;
+    padding: 14px;
+    border: 1px dashed var(--card-border);
+    border-radius: 12px;
+    background: none;
+    color: var(--text-dim);
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-bottom: 14px;
+    transition: all 0.2s;
+  }
+  .add-workout-btn:hover {
+    border-color: var(--gold-mid);
+    color: var(--gold);
+  }
+  .cancel-btn {
+    border-style: solid;
+    border-color: #331111;
+    color: #664444;
+  }
+  .reference-divider {
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin: 24px 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .reference-divider::before, .reference-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--card-border);
+  }
+
+  /* ── Edit Workout Sub-View ── */
+  .edit-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .edit-back-btn {
+    background: none;
+    border: none;
+    color: var(--gold);
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    padding: 4px 0;
+  }
+  .edit-section-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+  .edit-selected {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 8px;
+    margin-bottom: 20px;
+  }
+  .edit-selected-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    font-size: 0.85rem;
+    color: var(--text);
+  }
+  .edit-remove-btn {
+    background: none;
+    border: none;
+    color: #664444;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 2px 6px;
+  }
+  .exercise-group-header {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin: 16px 0 8px;
+  }
+  .exercise-option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 6px;
+    color: var(--text);
+    font-size: 0.85rem;
+    font-family: 'Source Sans 3', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .exercise-option:active {
+    transform: scale(0.98);
+  }
+  .exercise-option.selected {
+    border-color: var(--orange);
+    color: var(--orange);
+    background: var(--orange-dim);
+  }
 </style>
 </head>
 <body>
@@ -427,7 +636,7 @@
   <button class="active" onclick="showSection('workout')">Workout</button>
   <button onclick="showSection('history')">History</button>
   <button onclick="showSection('stats')">Stats</button>
-  <button onclick="showSection('info')">Info</button>
+  <button onclick="showSection('program')">Program</button>
 </div>
 
 <div class="content">
@@ -440,99 +649,115 @@
   <!-- STATS -->
   <div id="sec-stats" class="section"></div>
 
-  <!-- INFO -->
-  <div id="sec-info" class="section">
-    <div class="info-card">
-      <h3>Schedule</h3>
-      <p>3 days per week, alternating A/B workouts. Week 1: A, B, A. Week 2: B, A, B. Rest at least one day between sessions.</p>
-    </div>
-    <div class="info-card">
-      <h3>Progression</h3>
-      <p>With fixed dumbbells (5 lb jumps per dumbbell), stay at your current weight until 5×5 feels solid — even hitting 5×6 or 5×7. Then jump to the next dumbbell. You might only get 5×3 at the new weight — that's fine. Build back to 5×5 over a few sessions.</p>
-    </div>
-    <div class="info-card">
-      <h3>Rest Between Sets</h3>
-      <p>90 seconds when weights are light. 3–5 minutes as they get heavy. No rush.</p>
-    </div>
-    <div class="info-card">
-      <h3>Warmup</h3>
-      <p>Before each exercise: 1×5 with very light weight, then 1×5 at ~50% of your working weight. Then hit your 5 working sets.</p>
-    </div>
-    <div class="info-card">
-      <h3>Exercise Tips</h3>
-      <ul>
-        <li><strong>Goblet Squat</strong> — Hold one DB vertically at your chest. Squat deep.</li>
-        <li><strong>DB Bench Press</strong> — Flat bench, press DBs up together.</li>
-        <li><strong>DB Row</strong> — Bent-over, one arm at a time or both. Pull to hip.</li>
-        <li><strong>DB Romanian Deadlift</strong> — Slight knee bend, hinge at hips, feel the hamstrings.</li>
-        <li><strong>DB Overhead Press</strong> — Standing or seated. Press straight up.</li>
-        <li><strong>DB Floor Press</strong> — Lie on the floor, press up. Tricep-focused bench variant.</li>
-      </ul>
-    </div>
-    <div class="info-card">
-      <h3>Deload Protocol</h3>
-      <p>If you fail to get 5×5 at a weight for 3 consecutive sessions, drop down 10% and build back up. This is normal and part of the process.</p>
-    </div>
-    <button class="reset-btn" onclick="resetAll()">Reset All Data</button>
-  </div>
+  <!-- PROGRAM -->
+  <div id="sec-program" class="section"></div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ── Data ──
-const WORKOUTS = {
-  A: {
-    label: 'Workout A',
-    exercises: [
-      { id: 'goblet_squat', name: 'Goblet Squat', note: 'One DB at chest, squat deep', defaultWeight: 30, unit: 'lb' },
-      { id: 'db_bench', name: 'DB Bench Press', note: 'Flat bench, press up', defaultWeight: 20, unit: 'lb ea.' },
-      { id: 'db_row', name: 'DB Row', note: 'Bent-over, pull to hip', defaultWeight: 20, unit: 'lb ea.' }
-    ]
-  },
-  B: {
-    label: 'Workout B',
-    exercises: [
-      { id: 'db_rdl', name: 'DB Romanian Deadlift', note: 'Hinge at hips, slight knee bend', defaultWeight: 30, unit: 'lb ea.' },
-      { id: 'db_ohp', name: 'DB Overhead Press', note: 'Standing, press straight up', defaultWeight: 15, unit: 'lb ea.' },
-      { id: 'db_floor', name: 'DB Floor Press', note: 'Lie on floor, press up', defaultWeight: 20, unit: 'lb ea.' }
-    ]
-  }
-};
+// ── Exercise Library ──
+const EXERCISE_LIBRARY = [
+  // Legs
+  { id: 'goblet_squat', name: 'Goblet Squat', note: 'One DB at chest, squat deep', group: 'legs', defaultWeight: 30, unit: 'lb' },
+  { id: 'db_rdl', name: 'DB Romanian Deadlift', note: 'Hinge at hips, slight knee bend', group: 'legs', defaultWeight: 30, unit: 'lb ea.' },
+  { id: 'db_lunge', name: 'DB Lunge', note: 'Step forward, lower back knee', group: 'legs', defaultWeight: 20, unit: 'lb ea.' },
+  { id: 'db_bulgarian', name: 'DB Bulgarian Split Squat', note: 'Rear foot elevated, squat down', group: 'legs', defaultWeight: 20, unit: 'lb ea.' },
+  { id: 'db_stepup', name: 'DB Step-Up', note: 'Step onto bench, drive up', group: 'legs', defaultWeight: 20, unit: 'lb ea.' },
+  { id: 'db_sumo', name: 'DB Sumo Squat', note: 'Wide stance, DB hangs between legs', group: 'legs', defaultWeight: 30, unit: 'lb' },
+  // Push
+  { id: 'db_bench', name: 'DB Bench Press', note: 'Flat bench, press up', group: 'push', defaultWeight: 20, unit: 'lb ea.' },
+  { id: 'db_floor', name: 'DB Floor Press', note: 'Lie on floor, press up', group: 'push', defaultWeight: 20, unit: 'lb ea.' },
+  { id: 'db_ohp', name: 'DB Overhead Press', note: 'Standing, press straight up', group: 'push', defaultWeight: 15, unit: 'lb ea.' },
+  { id: 'db_incline', name: 'DB Incline Press', note: 'Incline bench, press up at angle', group: 'push', defaultWeight: 20, unit: 'lb ea.' },
+  { id: 'db_arnold', name: 'DB Arnold Press', note: 'Rotate palms as you press up', group: 'push', defaultWeight: 15, unit: 'lb ea.' },
+  { id: 'db_lateral', name: 'DB Lateral Raise', note: 'Raise out to sides, slight bend', group: 'push', defaultWeight: 10, unit: 'lb ea.' },
+  // Pull
+  { id: 'db_row', name: 'DB Row', note: 'Bent-over, pull to hip', group: 'pull', defaultWeight: 20, unit: 'lb ea.' },
+  { id: 'db_reverse_fly', name: 'DB Reverse Fly', note: 'Bent-over, fly out to sides', group: 'pull', defaultWeight: 10, unit: 'lb ea.' },
+  { id: 'db_shrug', name: 'DB Shrug', note: 'Shrug shoulders up, hold at top', group: 'pull', defaultWeight: 25, unit: 'lb ea.' },
+  { id: 'db_pullover', name: 'DB Pullover', note: 'Lie on bench, arc DB over head', group: 'pull', defaultWeight: 20, unit: 'lb' },
+  { id: 'db_curl', name: 'DB Curl', note: 'Curl up, squeeze at top', group: 'pull', defaultWeight: 15, unit: 'lb ea.' },
+  { id: 'db_hammer', name: 'DB Hammer Curl', note: 'Neutral grip, curl up', group: 'pull', defaultWeight: 15, unit: 'lb ea.' }
+];
+
+const DEFAULT_PROGRAM = [
+  { id: 'A', label: 'Workout A', exerciseIds: ['goblet_squat', 'db_bench', 'db_row'] },
+  { id: 'B', label: 'Workout B', exerciseIds: ['db_rdl', 'db_ohp', 'db_floor'] }
+];
+
+// ── Derived WORKOUTS (rebuilt from state.program + library) ──
+let WORKOUTS = {};
+
+function buildWorkouts() {
+  WORKOUTS = {};
+  state.program.forEach(pw => {
+    WORKOUTS[pw.id] = {
+      label: pw.label,
+      exercises: pw.exerciseIds.map(eid => {
+        const lib = EXERCISE_LIBRARY.find(e => e.id === eid);
+        return lib ? { id: lib.id, name: lib.name, note: lib.note, defaultWeight: lib.defaultWeight, unit: lib.unit } : null;
+      }).filter(Boolean)
+    };
+  });
+}
 
 // ── State ──
-let state = loadState();
-
 function defaultState() {
+  const program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM));
   const weights = {};
-  Object.values(WORKOUTS).forEach(w =>
-    w.exercises.forEach(e => { weights[e.id] = e.defaultWeight; })
-  );
+  program.forEach(pw => {
+    pw.exerciseIds.forEach(eid => {
+      const lib = EXERCISE_LIBRARY.find(e => e.id === eid);
+      if (lib) weights[eid] = lib.defaultWeight;
+    });
+  });
   return {
     nextWorkout: 'A',
     weights,
-    currentSets: {},   // { exerciseId: [bool, bool, bool, bool, bool] }
+    currentSets: {},
     history: [],
-    totalWorkouts: 0
+    totalWorkouts: 0,
+    program
   };
 }
 
 function loadState() {
   try {
     const s = localStorage.getItem('dumblifts');
-    if (s) return JSON.parse(s);
+    if (s) {
+      const parsed = JSON.parse(s);
+      // Migration: add program if missing (existing users)
+      if (!parsed.program) {
+        parsed.program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM));
+      }
+      return parsed;
+    }
   } catch(e) {}
   return defaultState();
 }
+
+let state = loadState();
+buildWorkouts();
 
 function saveState() {
   localStorage.setItem('dumblifts', JSON.stringify(state));
 }
 
+// ── Edit Workout State ──
+let editingWorkoutIdx = null;
+let editNewWorkoutId = null;
+let editSelectedIds = [];
+
 // ── Render ──
 function renderWorkout() {
   const sec = document.getElementById('sec-workout');
   const wo = WORKOUTS[state.nextWorkout];
+
+  if (!wo) {
+    sec.innerHTML = '<div class="empty-state">No workout found. Check your program settings.</div>';
+    return;
+  }
 
   // Init current sets if needed
   wo.exercises.forEach(ex => {
@@ -639,14 +864,13 @@ function renderProgressChart(workoutLabel, exercises, colors, history) {
     gridSvg += `<text x="${pad.left - 6}" y="${y + 3.5}" text-anchor="end" fill="#8a8478" font-size="10" font-family="Oswald, sans-serif">${Math.round(val)}</text>`;
   }
 
-  // X axis labels (dates) — show first, last, and a couple in between
+  // X axis labels (dates)
   let xLabelSvg = '';
   const labelIndices = new Set([0, n - 1]);
   if (n > 4) labelIndices.add(Math.floor(n / 2));
   if (n > 8) { labelIndices.add(Math.floor(n / 4)); labelIndices.add(Math.floor(3 * n / 4)); }
   labelIndices.forEach(idx => {
     const x = scaleX(idx);
-    // Parse date to short format
     const raw = entries[idx].date;
     const parts = raw.split(', ');
     const short = parts.length >= 2 ? parts[1].replace(/,.*/, '') : raw;
@@ -684,10 +908,18 @@ function renderProgressChart(workoutLabel, exercises, colors, history) {
 function renderStats() {
   const sec = document.getElementById('sec-stats');
   const weekNum = Math.floor(state.totalWorkouts / 3) + 1;
-  const aCount = state.history.filter(h => h.type === 'Workout A').length;
-  const bCount = state.history.filter(h => h.type === 'Workout B').length;
 
-  // Current maxes
+  // Dynamic workout counts
+  let countHtml = '';
+  state.program.forEach(pw => {
+    const count = state.history.filter(h => h.type === pw.label).length;
+    countHtml += `<div class="stat-card">
+      <div class="stat-value">${count}</div>
+      <div class="stat-label">${pw.label}</div>
+    </div>`;
+  });
+
+  // Current weights
   let maxHtml = '';
   Object.values(WORKOUTS).forEach(w => {
     w.exercises.forEach(ex => {
@@ -695,11 +927,20 @@ function renderStats() {
     });
   });
 
-  // Progress charts
-  const chartA = renderProgressChart('Workout A', WORKOUTS.A.exercises,
-    ['#F17300', '#E8943A', '#D4A55A'], state.history);
-  const chartB = renderProgressChart('Workout B', WORKOUTS.B.exercises,
-    ['#7A8B8B', '#5E9BA8', '#8BAAB5'], state.history);
+  // Progress charts — warm tones for even index, cool for odd
+  const colorSets = [
+    ['#F17300', '#E8943A', '#D4A55A'],
+    ['#7A8B8B', '#5E9BA8', '#8BAAB5'],
+    ['#F17300', '#E8943A', '#D4A55A'],
+    ['#7A8B8B', '#5E9BA8', '#8BAAB5']
+  ];
+  let chartsHtml = '';
+  state.program.forEach((pw, idx) => {
+    const wo = WORKOUTS[pw.id];
+    if (wo) {
+      chartsHtml += renderProgressChart(pw.label, wo.exercises, colorSets[idx % colorSets.length], state.history);
+    }
+  });
 
   sec.innerHTML = `
     <div class="stats-grid">
@@ -711,21 +952,164 @@ function renderStats() {
         <div class="stat-value">${weekNum}</div>
         <div class="stat-label">Current Week</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-value">${aCount}</div>
-        <div class="stat-label">Workout A</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">${bCount}</div>
-        <div class="stat-label">Workout B</div>
-      </div>
+      ${countHtml}
     </div>
     <div class="info-card">
       <h3>Current Weights</h3>
       ${maxHtml}
     </div>
-    ${chartA}
-    ${chartB}`;
+    ${chartsHtml}`;
+}
+
+// ── Program Tab ──
+function renderProgram() {
+  const sec = document.getElementById('sec-program');
+
+  let html = '<div class="workout-label">Your Program</div>';
+
+  // Workout cards
+  state.program.forEach((pw, idx) => {
+    const wo = WORKOUTS[pw.id];
+    html += `<div class="program-card">
+      <div class="program-card-header">
+        <span>${pw.label}</span>
+        <div>
+          <button class="program-action-btn" onclick="editWorkout(${idx})">Edit</button>
+          ${state.program.length > 2 ? `<button class="program-action-btn remove" onclick="removeWorkout(${idx})">×</button>` : ''}
+        </div>
+      </div>`;
+    if (wo) {
+      wo.exercises.forEach(ex => {
+        html += `<div class="program-card-exercise"><span style="color:var(--text-dim);font-weight:400;">${ex.name}</span> <span>${state.weights[ex.id]} ${ex.unit}</span></div>`;
+      });
+    }
+    html += '</div>';
+  });
+
+  // Add workout button
+  if (state.program.length < 4) {
+    html += `<button class="add-workout-btn" onclick="addWorkout()">+ Add Workout</button>`;
+  }
+
+  // Balance check
+  const allExerciseIds = new Set();
+  state.program.forEach(pw => pw.exerciseIds.forEach(id => allExerciseIds.add(id)));
+  const groups = new Set();
+  allExerciseIds.forEach(id => {
+    const lib = EXERCISE_LIBRARY.find(e => e.id === id);
+    if (lib) groups.add(lib.group);
+  });
+  const hasLegs = groups.has('legs');
+  const hasPush = groups.has('push');
+  const hasPull = groups.has('pull');
+
+  html += `<div class="info-card balance-check">
+    <h3>Balance Check</h3>
+    <div class="balance-badges">
+      <span class="${hasPush ? 'balance-ok' : 'balance-warn'}">${hasPush ? '✓' : '✗'} Push</span>
+      <span class="${hasPull ? 'balance-ok' : 'balance-warn'}">${hasPull ? '✓' : '✗'} Pull</span>
+      <span class="${hasLegs ? 'balance-ok' : 'balance-warn'}">${hasLegs ? '✓' : '✗'} Legs</span>
+    </div>
+    ${(!hasLegs || !hasPush || !hasPull) ? '<p class="balance-warning-text">Your program is missing muscle groups. Consider adding exercises for balanced development.</p>' : ''}
+  </div>`;
+
+  // Presets
+  html += `<div class="info-card">
+    <h3>Presets</h3>
+    <button class="add-workout-btn" onclick="restoreDefault()" style="margin-top:0;">Restore Default</button>
+  </div>`;
+
+  // Reference divider
+  html += '<div class="reference-divider">Reference</div>';
+
+  // Info cards
+  html += `
+    <div class="info-card">
+      <h3>Schedule</h3>
+      <p>3 days per week, alternating workouts. Rest at least one day between sessions.</p>
+    </div>
+    <div class="info-card">
+      <h3>Progression</h3>
+      <p>With fixed dumbbells (5 lb jumps per dumbbell), stay at your current weight until 5×5 feels solid — even hitting 5×6 or 5×7. Then jump to the next dumbbell. You might only get 5×3 at the new weight — that's fine. Build back to 5×5 over a few sessions.</p>
+    </div>
+    <div class="info-card">
+      <h3>Rest Between Sets</h3>
+      <p>90 seconds when weights are light. 3–5 minutes as they get heavy. No rush.</p>
+    </div>
+    <div class="info-card">
+      <h3>Warmup</h3>
+      <p>Before each exercise: 1×5 with very light weight, then 1×5 at ~50% of your working weight. Then hit your 5 working sets.</p>
+    </div>
+    <div class="info-card">
+      <h3>Exercise Tips</h3>
+      <ul>
+        <li><strong>Goblet Squat</strong> — Hold one DB vertically at your chest. Squat deep.</li>
+        <li><strong>DB Bench Press</strong> — Flat bench, press DBs up together.</li>
+        <li><strong>DB Row</strong> — Bent-over, one arm at a time or both. Pull to hip.</li>
+        <li><strong>DB Romanian Deadlift</strong> — Slight knee bend, hinge at hips, feel the hamstrings.</li>
+        <li><strong>DB Overhead Press</strong> — Standing or seated. Press straight up.</li>
+        <li><strong>DB Floor Press</strong> — Lie on the floor, press up. Tricep-focused bench variant.</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h3>Deload Protocol</h3>
+      <p>If you fail to get 5×5 at a weight for 3 consecutive sessions, drop down 10% and build back up. This is normal and part of the process.</p>
+    </div>`;
+
+  html += '<button class="reset-btn" onclick="resetAll()">Reset All Data</button>';
+
+  sec.innerHTML = html;
+}
+
+// ── Edit Workout Sub-View ──
+function renderEditWorkout() {
+  const sec = document.getElementById('sec-program');
+  const isNew = editNewWorkoutId !== null;
+  const label = isNew ? 'Workout ' + editNewWorkoutId : state.program[editingWorkoutIdx].label;
+
+  let html = `<div class="edit-header">
+    <button class="edit-back-btn" onclick="cancelEdit()">← Back</button>
+    <span>${isNew ? 'New' : 'Edit'} ${label}</span>
+  </div>`;
+
+  // Selected exercises
+  html += `<div class="edit-section-label">Selected (${editSelectedIds.length}/3)</div>`;
+  if (editSelectedIds.length > 0) {
+    html += '<div class="edit-selected">';
+    editSelectedIds.forEach(eid => {
+      const lib = EXERCISE_LIBRARY.find(e => e.id === eid);
+      if (lib) {
+        html += `<div class="edit-selected-item">
+          <span>${lib.name}</span>
+          <button class="edit-remove-btn" onclick="editToggleExercise('${eid}')">×</button>
+        </div>`;
+      }
+    });
+    html += '</div>';
+  }
+
+  // Exercise library by group
+  const groupOrder = ['legs', 'push', 'pull'];
+  const groupLabels = { legs: 'Legs', push: 'Push', pull: 'Pull' };
+
+  groupOrder.forEach(group => {
+    html += `<div class="exercise-group-header">${groupLabels[group]}</div>`;
+    EXERCISE_LIBRARY.filter(e => e.group === group).forEach(ex => {
+      const selected = editSelectedIds.includes(ex.id);
+      html += `<button class="exercise-option ${selected ? 'selected' : ''}" onclick="editToggleExercise('${ex.id}')">
+        ${ex.name}${selected ? ' ✓' : ''}
+      </button>`;
+    });
+  });
+
+  // Save / Cancel
+  const canSave = editSelectedIds.length === 3;
+  html += `<button class="complete-btn ${canSave ? 'ready' : ''}" onclick="${canSave ? 'saveEditWorkout()' : ''}" ${canSave ? '' : 'disabled'} style="margin-top:20px;">
+    ${canSave ? 'Save Workout' : 'Select 3 Exercises'}
+  </button>`;
+  html += `<button class="add-workout-btn cancel-btn" onclick="cancelEdit()" style="margin-top:10px;">Cancel</button>`;
+
+  sec.innerHTML = html;
 }
 
 // ── Actions ──
@@ -760,8 +1144,11 @@ function completeWorkout() {
     state.currentSets[ex.id] = [false, false, false, false, false];
   });
 
-  // Alternate
-  state.nextWorkout = state.nextWorkout === 'A' ? 'B' : 'A';
+  // Cycle to next workout
+  const ids = state.program.map(p => p.id);
+  const curIdx = ids.indexOf(state.nextWorkout);
+  state.nextWorkout = ids[(curIdx + 1) % ids.length];
+
   saveState();
   renderWorkout();
   showToast('Workout logged! 💪');
@@ -770,12 +1157,132 @@ function completeWorkout() {
 function resetAll() {
   if (confirm('Reset all DumbLifts data? This clears your history, weights, and progress.')) {
     state = defaultState();
+    buildWorkouts();
     saveState();
     renderWorkout();
     renderHistory();
     renderStats();
     showToast('Data reset');
   }
+}
+
+// ── Program Actions ──
+function editWorkout(idx) {
+  editingWorkoutIdx = idx;
+  editNewWorkoutId = null;
+  editSelectedIds = [...state.program[idx].exerciseIds];
+  renderEditWorkout();
+}
+
+function addWorkout() {
+  const usedIds = state.program.map(p => p.id);
+  const nextId = ['A', 'B', 'C', 'D'].find(id => !usedIds.includes(id));
+  if (!nextId) return;
+
+  editingWorkoutIdx = state.program.length;
+  editNewWorkoutId = nextId;
+  editSelectedIds = [];
+  renderEditWorkout();
+}
+
+function editToggleExercise(eid) {
+  const idx = editSelectedIds.indexOf(eid);
+  if (idx >= 0) {
+    editSelectedIds.splice(idx, 1);
+  } else if (editSelectedIds.length < 3) {
+    editSelectedIds.push(eid);
+  }
+  renderEditWorkout();
+}
+
+function saveEditWorkout() {
+  if (editSelectedIds.length !== 3) return;
+
+  if (editNewWorkoutId) {
+    // Adding new workout
+    state.program.push({
+      id: editNewWorkoutId,
+      label: 'Workout ' + editNewWorkoutId,
+      exerciseIds: [...editSelectedIds]
+    });
+  } else {
+    // Editing existing
+    state.program[editingWorkoutIdx].exerciseIds = [...editSelectedIds];
+  }
+
+  // Init weights for new exercises
+  editSelectedIds.forEach(eid => {
+    if (state.weights[eid] === undefined) {
+      const lib = EXERCISE_LIBRARY.find(e => e.id === eid);
+      if (lib) state.weights[eid] = lib.defaultWeight;
+    }
+  });
+
+  // Clear currentSets for this workout's exercises
+  editSelectedIds.forEach(eid => {
+    state.currentSets[eid] = [false, false, false, false, false];
+  });
+
+  buildWorkouts();
+  saveState();
+  editingWorkoutIdx = null;
+  editNewWorkoutId = null;
+  editSelectedIds = [];
+  renderProgram();
+}
+
+function cancelEdit() {
+  editingWorkoutIdx = null;
+  editNewWorkoutId = null;
+  editSelectedIds = [];
+  renderProgram();
+}
+
+function removeWorkout(idx) {
+  if (state.program.length <= 2) return;
+  const pw = state.program[idx];
+  if (!confirm(`Remove ${pw.label}? This cannot be undone.`)) return;
+
+  state.program.splice(idx, 1);
+
+  // Clean up currentSets for orphaned exercises
+  const usedIds = new Set();
+  state.program.forEach(p => p.exerciseIds.forEach(id => usedIds.add(id)));
+  Object.keys(state.currentSets).forEach(id => {
+    if (!usedIds.has(id)) delete state.currentSets[id];
+  });
+
+  // Fix nextWorkout if it was the removed workout
+  const ids = state.program.map(p => p.id);
+  if (!ids.includes(state.nextWorkout)) {
+    state.nextWorkout = ids[0];
+  }
+
+  buildWorkouts();
+  saveState();
+  renderProgram();
+}
+
+function restoreDefault() {
+  if (!confirm('Restore default A/B program? This resets your workout configuration but keeps your history.')) return;
+
+  state.program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM));
+
+  // Re-init weights from defaults
+  state.program.forEach(pw => {
+    pw.exerciseIds.forEach(eid => {
+      const lib = EXERCISE_LIBRARY.find(e => e.id === eid);
+      if (lib) state.weights[eid] = lib.defaultWeight;
+    });
+  });
+
+  state.currentSets = {};
+  state.nextWorkout = 'A';
+
+  buildWorkouts();
+  saveState();
+  renderProgram();
+  showToast('Default program restored');
 }
 
 // ── Navigation ──
@@ -788,6 +1295,7 @@ function showSection(name) {
   if (name === 'workout') renderWorkout();
   if (name === 'history') renderHistory();
   if (name === 'stats') renderStats();
+  if (name === 'program') renderProgram();
 }
 
 function showToast(msg) {

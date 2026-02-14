@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dumblifts-v3';
+const CACHE_NAME = 'dumblifts-v4';
 const ASSETS = [
   '/',
   '/index.html',
