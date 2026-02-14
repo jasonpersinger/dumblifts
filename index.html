@@ -873,25 +873,27 @@ db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
 const EXERCISE_LIBRARY = [
   // Legs
   { id: 'goblet_squat', name: 'Goblet Squat', note: 'One DB at chest, squat deep', group: 'legs', defaultWeight: 30, unit: 'lb' },
-  { id: 'db_rdl', name: 'DB Romanian Deadlift', note: 'Hinge at hips, slight knee bend', group: 'legs', defaultWeight: 30, unit: 'lb ea.' },
-  { id: 'db_lunge', name: 'DB Lunge', note: 'Step forward, lower back knee', group: 'legs', defaultWeight: 20, unit: 'lb ea.' },
-  { id: 'db_bulgarian', name: 'DB Bulgarian Split Squat', note: 'Rear foot elevated, squat down', group: 'legs', defaultWeight: 20, unit: 'lb ea.' },
-  { id: 'db_stepup', name: 'DB Step-Up', note: 'Step onto bench, drive up', group: 'legs', defaultWeight: 20, unit: 'lb ea.' },
-  { id: 'db_sumo', name: 'DB Sumo Squat', note: 'Wide stance, DB hangs between legs', group: 'legs', defaultWeight: 30, unit: 'lb' },
+  { id: 'db_rdl', name: 'Romanian Deadlift', note: 'Hinge at hips, slight knee bend', group: 'legs', defaultWeight: 30, unit: 'lb ea.' },
+  { id: 'db_lunge', name: 'Lunge', note: 'Step forward, lower back knee', group: 'legs', defaultWeight: 20, unit: 'lb ea.' },
+  { id: 'db_bulgarian', name: 'Bulgarian Split Squat', note: 'Rear foot elevated, squat down', group: 'legs', defaultWeight: 20, unit: 'lb ea.' },
+  { id: 'db_stepup', name: 'Step-Up', note: 'Step onto bench, drive up', group: 'legs', defaultWeight: 20, unit: 'lb ea.' },
+  { id: 'db_sumo', name: 'Sumo Squat', note: 'Wide stance, DB hangs between legs', group: 'legs', defaultWeight: 30, unit: 'lb' },
+  { id: 'db_thruster', name: 'Thruster', note: 'Squat into overhead press, full body', group: 'legs', defaultWeight: 20, unit: 'lb ea.' },
+  { id: 'db_clean_press', name: 'Clean & Press', note: 'Deadlift pull into overhead press', group: 'legs', defaultWeight: 20, unit: 'lb ea.' },
   // Push
-  { id: 'db_bench', name: 'DB Bench Press', note: 'Flat bench, press up', group: 'push', defaultWeight: 20, unit: 'lb ea.' },
-  { id: 'db_floor', name: 'DB Floor Press', note: 'Lie on floor, press up', group: 'push', defaultWeight: 20, unit: 'lb ea.' },
-  { id: 'db_ohp', name: 'DB Overhead Press', note: 'Standing, press straight up', group: 'push', defaultWeight: 15, unit: 'lb ea.' },
-  { id: 'db_incline', name: 'DB Incline Press', note: 'Incline bench, press up at angle', group: 'push', defaultWeight: 20, unit: 'lb ea.' },
-  { id: 'db_arnold', name: 'DB Arnold Press', note: 'Rotate palms as you press up', group: 'push', defaultWeight: 15, unit: 'lb ea.' },
-  { id: 'db_lateral', name: 'DB Lateral Raise', note: 'Raise out to sides, slight bend', group: 'push', defaultWeight: 10, unit: 'lb ea.' },
+  { id: 'db_bench', name: 'Bench Press', note: 'Flat bench, press up', group: 'push', defaultWeight: 20, unit: 'lb ea.' },
+  { id: 'db_floor', name: 'Floor Press', note: 'Lie on floor, press up', group: 'push', defaultWeight: 20, unit: 'lb ea.' },
+  { id: 'db_ohp', name: 'Overhead Press', note: 'Standing, press straight up', group: 'push', defaultWeight: 15, unit: 'lb ea.' },
+  { id: 'db_incline', name: 'Incline Press', note: 'Incline bench, press up at angle', group: 'push', defaultWeight: 20, unit: 'lb ea.' },
+  { id: 'db_arnold', name: 'Arnold Press', note: 'Rotate palms as you press up', group: 'push', defaultWeight: 15, unit: 'lb ea.' },
+  { id: 'db_lateral', name: 'Lateral Raise', note: 'Raise out to sides, slight bend', group: 'push', defaultWeight: 10, unit: 'lb ea.' },
   // Pull
-  { id: 'db_row', name: 'DB Row', note: 'Bent-over, pull to hip', group: 'pull', defaultWeight: 20, unit: 'lb ea.' },
-  { id: 'db_reverse_fly', name: 'DB Reverse Fly', note: 'Bent-over, fly out to sides', group: 'pull', defaultWeight: 10, unit: 'lb ea.' },
-  { id: 'db_shrug', name: 'DB Shrug', note: 'Shrug shoulders up, hold at top', group: 'pull', defaultWeight: 25, unit: 'lb ea.' },
-  { id: 'db_pullover', name: 'DB Pullover', note: 'Lie on bench, arc DB over head', group: 'pull', defaultWeight: 20, unit: 'lb' },
-  { id: 'db_curl', name: 'DB Curl', note: 'Curl up, squeeze at top', group: 'pull', defaultWeight: 15, unit: 'lb ea.' },
-  { id: 'db_hammer', name: 'DB Hammer Curl', note: 'Neutral grip, curl up', group: 'pull', defaultWeight: 15, unit: 'lb ea.' }
+  { id: 'db_row', name: 'Row', note: 'Bent-over, pull to hip', group: 'pull', defaultWeight: 20, unit: 'lb ea.' },
+  { id: 'db_reverse_fly', name: 'Reverse Fly', note: 'Bent-over, fly out to sides', group: 'pull', defaultWeight: 10, unit: 'lb ea.' },
+  { id: 'db_shrug', name: 'Shrug', note: 'Shrug shoulders up, hold at top', group: 'pull', defaultWeight: 25, unit: 'lb ea.' },
+  { id: 'db_pullover', name: 'Pullover', note: 'Lie on bench, arc DB over head', group: 'pull', defaultWeight: 20, unit: 'lb' },
+  { id: 'db_curl', name: 'Curl', note: 'Curl up, squeeze at top', group: 'pull', defaultWeight: 15, unit: 'lb ea.' },
+  { id: 'db_hammer', name: 'Hammer Curl', note: 'Neutral grip, curl up', group: 'pull', defaultWeight: 15, unit: 'lb ea.' }
 ];
 
 const DEFAULT_PROGRAM = [
