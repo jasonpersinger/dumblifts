@@ -407,6 +407,53 @@
     opacity: 1;
   }
 
+  /* ── Rest Timer ── */
+  .rest-timer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    border-top: 1px solid var(--card-border);
+    z-index: 90;
+    transform: translateY(100%);
+    opacity: 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .rest-timer.active {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .rest-timer-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--orange);
+    transition: width 1s linear;
+  }
+  .rest-timer-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 14px 20px;
+  }
+  .rest-timer-time {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+  .rest-timer-hint {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
   /* ── Program Tab ── */
   .program-card {
     background: var(--card-bg);
@@ -727,10 +774,17 @@
     <a href="https://x.com/dumbliftsdotcom" target="_blank" rel="noopener" aria-label="X">
       <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
     </a>
+    <a href="https://ko-fi.com/dumblifts" target="_blank" rel="noopener" aria-label="Ko-fi">
+      <svg viewBox="0 0 24 24"><path d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.022 11.822c.164 2.424 2.586 2.672 2.586 2.672s8.267-.023 11.966-.049c2.438-.426 2.683-2.566 2.658-3.734 4.352.24 7.422-2.831 6.649-6.916zm-11.062 3.511c-1.246 1.453-4.011 3.976-4.011 3.976s-.121.119-.31.023c-.076-.057-.108-.09-.108-.09-.443-.441-3.368-3.049-4.034-3.954-.709-.965-1.041-2.7-.091-3.71.951-1.01 3.005-1.086 4.363.407 0 0 1.565-1.782 3.468-.963 1.904.82 1.832 3.011.723 4.311zm6.173.478c-.928.116-1.682.028-1.682.028V7.284h1.77s1.971.551 1.971 2.638c0 1.913-.985 2.667-2.059 3.015z"/></svg>
+    </a>
+    <a href="https://cash.app/$dumblifts" target="_blank" rel="noopener" aria-label="Cash App">
+      <svg viewBox="0 0 24 24"><path d="M13.153 4.21l.594-2.244a.754.754 0 01.924-.53l1.378.364a.754.754 0 01.53.924l-.594 2.244c1.419.538 2.678 1.353 3.237 1.857a.754.754 0 01.066 1.063l-.964 1.132a.754.754 0 01-1.063.066c-.721-.614-2.002-1.4-3.51-1.799l-.737 2.784c3.037 1.063 5.17 2.27 4.487 4.852-.544 2.058-2.592 3.174-5.107 3.283l-.594 2.244a.754.754 0 01-.924.53l-1.378-.364a.754.754 0 01-.53-.924l.594-2.244c-1.782-.454-3.22-1.344-3.95-2.032a.754.754 0 01-.032-1.066l1.024-1.073a.754.754 0 011.066-.032c.86.82 2.272 1.62 4.018 2.064l.752-2.842c-2.858-1.005-5.127-2.208-4.394-4.981.544-2.058 2.68-3.108 5.087-3.196zm-1.818 6.12l-.7 2.643c1.327.467 2.04.636 2.742.43.765-.225 1.118-.768 1.254-1.282.32-1.211-.587-1.59-3.296-1.791zm2.463-5.313c-.764.225-1.085.736-1.22 1.25-.265 1.001.19 1.462 2.782 1.733l.651-2.46c-1.11-.403-1.695-.55-2.213-.523z"/></svg>
+    </a>
   </div>
   <div class="footer-email"><a href="mailto:jason@dumblifts.com">jason@dumblifts.com</a></div>
 </footer>
 
+<div class="rest-timer" id="restTimer" onclick="clearRestTimer()"></div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -821,6 +875,10 @@ buildWorkouts();
 function saveState() {
   localStorage.setItem('dumblifts', JSON.stringify(state));
 }
+
+// ── Rest Timer State ──
+let restTimer = null;
+let restTimeLeft = 0;
 
 // ── Edit Workout State ──
 let editingWorkoutIdx = null;
@@ -1097,6 +1155,13 @@ function renderProgram() {
     <button class="add-workout-btn" onclick="restoreDefault()" style="margin-top:0;">Restore Default</button>
   </div>`;
 
+  // Data export/import
+  html += `<div class="info-card">
+    <h3>Your Data</h3>
+    <button class="add-workout-btn" onclick="exportData()" style="margin-top:0;">Export Backup</button>
+    <button class="add-workout-btn" onclick="importData()">Import Backup</button>
+  </div>`;
+
   // Reference divider
   html += '<div class="reference-divider">Reference</div>';
 
@@ -1198,9 +1263,19 @@ function renderEditWorkout() {
 
 // ── Actions ──
 function toggleSet(exId, setIndex) {
-  state.currentSets[exId][setIndex] = !state.currentSets[exId][setIndex];
+  const wasComplete = state.currentSets[exId][setIndex];
+  state.currentSets[exId][setIndex] = !wasComplete;
   saveState();
   renderWorkout();
+
+  // Start rest timer only when marking a set DONE (not undoing)
+  // and not when it's the last set of the exercise
+  if (!wasComplete) {
+    const allDone = state.currentSets[exId].every(Boolean);
+    if (!allDone) {
+      startRestTimer(90);
+    }
+  }
 }
 
 function changeWeight(exId, delta) {
@@ -1367,6 +1442,95 @@ function restoreDefault() {
   saveState();
   renderProgram();
   showToast('Default program restored');
+}
+
+// ── Data Export/Import ──
+function exportData() {
+  const json = JSON.stringify(state, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const date = new Date().toISOString().slice(0, 10);
+  a.href = url;
+  a.download = `dumblifts-backup-${date}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Data exported');
+}
+
+function importData() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        const required = ['weights', 'history', 'program', 'totalWorkouts', 'nextWorkout'];
+        const missing = required.filter(k => !(k in data));
+        if (missing.length) {
+          showToast('Invalid backup file');
+          return;
+        }
+        if (!confirm('Import data? This will replace your current data.')) return;
+        state = data;
+        buildWorkouts();
+        saveState();
+        renderWorkout();
+        renderHistory();
+        renderStats();
+        renderProgram();
+        showToast('Data imported');
+      } catch (err) {
+        showToast('Error reading file');
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+// ── Rest Timer ──
+function startRestTimer(seconds) {
+  clearRestTimer();
+  restTimeLeft = seconds;
+  const total = seconds;
+  updateRestTimerDisplay(total);
+  document.getElementById('restTimer').classList.add('active');
+
+  restTimer = setInterval(() => {
+    restTimeLeft--;
+    if (restTimeLeft <= 0) {
+      clearRestTimer();
+    } else {
+      updateRestTimerDisplay(total);
+    }
+  }, 1000);
+}
+
+function updateRestTimerDisplay(total) {
+  const el = document.getElementById('restTimer');
+  const min = Math.floor(restTimeLeft / 60);
+  const sec = restTimeLeft % 60;
+  const pct = (restTimeLeft / total) * 100;
+  el.innerHTML = `
+    <div class="rest-timer-bar" style="width:${pct}%"></div>
+    <div class="rest-timer-text">
+      <span class="rest-timer-time">${min}:${sec.toString().padStart(2, '0')}</span>
+      <span class="rest-timer-hint">tap to dismiss</span>
+    </div>`;
+}
+
+function clearRestTimer() {
+  if (restTimer) clearInterval(restTimer);
+  restTimer = null;
+  restTimeLeft = 0;
+  document.getElementById('restTimer').classList.remove('active');
 }
 
 // ── Navigation ──
