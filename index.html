@@ -818,9 +818,101 @@
   .auth-signout-btn:hover {
     color: var(--gold);
   }
+
+  /* ── Welcome Overlay ── */
+  .welcome-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.92);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .welcome-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 32px 24px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+  }
+  .welcome-card h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 16px;
+  }
+  .welcome-card p {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+  .welcome-card ul {
+    text-align: left;
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+  }
+  .welcome-card li {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.8;
+    padding-left: 20px;
+    position: relative;
+  }
+  .welcome-card li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+  .welcome-start-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: var(--orange);
+    color: var(--black);
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: all 0.2s;
+  }
+  .welcome-start-btn:active {
+    transform: scale(0.97);
+  }
 </style>
 </head>
 <body>
+
+<div class="welcome-overlay" id="welcomeOverlay" style="display:none;">
+  <div class="welcome-card">
+    <h2>Welcome to DumbLifts</h2>
+    <p>A simple 5×5 strength program built for dumbbells. Three exercises, five sets of five, three days a week.</p>
+    <ul>
+      <li>Tap sets to mark them complete</li>
+      <li>Adjust weight in 5 lb jumps</li>
+      <li>Customize your program under the Program tab</li>
+      <li>Sign in with Google to sync across devices</li>
+    </ul>
+    <button class="welcome-start-btn" onclick="dismissWelcome()">Let's Go</button>
+  </div>
+</div>
 
 <div class="header">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 730 160">
@@ -1789,6 +1881,16 @@ function signOutUser() {
 }
 
 auth.onAuthStateChanged(handleAuthStateChange);
+
+// ── Welcome Overlay ──
+function dismissWelcome() {
+  document.getElementById('welcomeOverlay').style.display = 'none';
+  localStorage.setItem('dumblifts-welcomed', '1');
+}
+
+if (!localStorage.getItem('dumblifts-welcomed')) {
+  document.getElementById('welcomeOverlay').style.display = 'flex';
+}
 
 // ── Init ──
 renderWorkout();
