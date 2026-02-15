@@ -1053,6 +1053,8 @@
 
 <script>
 // ── Firebase Init ──
+// SECURITY NOTE: Firebase API keys are public by design. Access control
+// depends on Firestore security rules configured in the Firebase console.
 firebase.initializeApp({
   apiKey: "AIzaSyBvYFI-FrC-_-egPi1giGqjUij95Y1Pp0Q",
   authDomain: "dumblifts-a9751.firebaseapp.com",
@@ -1067,6 +1069,12 @@ const auth = firebase.auth();
 
 // Offline persistence for Firestore (PWA support)
 db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
 
 // ── Exercise Library ──
 const EXERCISE_LIBRARY = [
@@ -1165,7 +1173,11 @@ let state = loadState();
 buildWorkouts();
 
 function saveState() {
-  localStorage.setItem('dumblifts', JSON.stringify(state));
+  try {
+    localStorage.setItem('dumblifts', JSON.stringify(state));
+  } catch (e) {
+    console.log('localStorage save failed:', e);
+  }
   syncToFirestore();
 }
 
@@ -1829,6 +1841,14 @@ function importData() {
           showToast('Invalid backup file');
           return;
         }
+        if (!Array.isArray(data.history) ||
+            typeof data.weights !== 'object' || data.weights === null ||
+            typeof data.totalWorkouts !== 'number' ||
+            typeof data.nextWorkout !== 'string' ||
+            !Array.isArray(data.program)) {
+          showToast('Invalid backup file');
+          return;
+        }
         if (!confirm('Import data? This will replace your current data.')) return;
         state = data;
         migrateCurrentSets(state);
@@ -1991,7 +2011,7 @@ function renderAuthBar() {
   const user = auth.currentUser;
   if (user) {
     const photo = user.photoURL ? `<img class="auth-user-photo" src="${user.photoURL}" alt="" referrerpolicy="no-referrer">` : '';
-    const name = user.displayName || user.email || '';
+    const name = escapeHtml(user.displayName || user.email || '');
     bar.innerHTML = `<div class="auth-user-info">
       ${photo}
       <span class="auth-user-name">${name}</span>
