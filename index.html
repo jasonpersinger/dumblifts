@@ -417,6 +417,52 @@
   .info-card ul { padding-left: 18px; }
   .info-card li { margin-bottom: 4px; }
 
+  /* Collapsible info cards */
+  .info-card.collapsible { cursor: pointer; }
+  .info-card.collapsible h3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0;
+  }
+  .info-card.collapsible h3::after {
+    content: '+';
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-dim);
+    transition: transform 0.2s;
+  }
+  .info-card.collapsible.open h3 { margin-bottom: 10px; }
+  .info-card.collapsible.open h3::after {
+    content: '\2212';
+  }
+  .info-card.collapsible .card-content {
+    display: none;
+  }
+  .info-card.collapsible.open .card-content {
+    display: block;
+  }
+
+  /* Program identity section */
+  .program-divider {
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin: 24px 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .program-divider::before, .program-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--card-border);
+  }
+
   /* ── Progress Charts ── */
   .progress-chart {
     background: var(--card-bg);
@@ -1511,42 +1557,105 @@ function renderProgram() {
     <button class="add-workout-btn" onclick="importData()">Import Backup</button>
   </div>`;
 
-  // Reference divider
-  html += '<div class="reference-divider">Reference</div>';
+  // ── The Program ──
+  html += '<div class="program-divider">The Program</div>';
 
-
-  // Info cards
   html += `
     <div class="info-card">
+      <h3>The DUMBLIFTS Method</h3>
+      <p>DUMBLIFTS is a dumbbell-only strength program built on three principles: compound movements organized into push/pull/legs, the 5x5 set and rep scheme, and progressive overload with fixed dumbbells.</p>
+      <p>Every workout trains your whole body through three exercises: one legs, one push, one pull. You alternate workouts and train three days a week. The goal is simple: get stronger with what you have.</p>
+      <p>This is not a bodybuilding split. It is not a circuit. It is structured strength training adapted for the equipment most people actually have access to: a rack of dumbbells and a bench.</p>
+    </div>
+
+    <div class="info-card">
+      <h3>Why Push / Pull / Legs?</h3>
+      <p>Every workout includes one exercise from each movement pattern. Push covers chest, shoulders, and triceps. Pull covers back and biceps. Legs covers quads, hamstrings, and glutes.</p>
+      <p>This means your whole body gets trained every session, three times per week. There is no "chest day" or "arm day." No muscles get neglected because you skipped a day. If you only make it to the gym twice this week instead of three times, you still hit everything.</p>
+      <p>The balance also protects your joints. Pressing without pulling leads to shoulder problems. Training push and pull together keeps things even.</p>
+    </div>
+
+    <div class="info-card">
+      <h3>Why 5x5?</h3>
+      <p>Five sets of five reps is one of the oldest and most proven strength training protocols. It sits in the sweet spot: heavy enough to build real strength, enough reps to practice the movement, and enough total volume to drive growth.</p>
+      <p>Lower reps (1-3) build max strength but don't give you enough practice. Higher reps (10-15) build endurance but don't build as much raw strength. 5x5 hits both.</p>
+      <p>The other benefit: it is dead simple. No percentage calculations, no periodization phases, no spreadsheets. Five sets. Five reps. Add weight when it gets easy. That is the program.</p>
+    </div>`;
+
+  // ── Reference ──
+  html += '<div class="reference-divider">Reference</div>';
+
+  html += `
+    <div class="info-card collapsible" onclick="toggleCard(this)">
+      <h3>Getting Started</h3>
+      <div class="card-content">
+        <p>Pick a weight you could do for 8-10 reps with good form. That is your starting weight for 5x5. It should feel moderate, not hard. You want room to grow.</p>
+        <p>Your first two weeks will feel easy. That is by design. You are learning the movements, building the habit, and establishing a baseline. Do not skip ahead.</p>
+        <p>If you have never done a goblet squat or Romanian deadlift before, start lighter than you think you need to. Form comes first. The weight will come.</p>
+      </div>
+    </div>
+
+    <div class="info-card collapsible" onclick="toggleCard(this)">
       <h3>Schedule</h3>
-      <p>3 days per week, alternating workouts. Rest at least one day between sessions.</p>
+      <div class="card-content">
+        <p>3 days per week, alternating workouts. Rest at least one day between sessions. A typical week looks like Monday / Wednesday / Friday, but any three non-consecutive days work.</p>
+        <p>Week 1: A / B / A. Week 2: B / A / B. Keep alternating. If you miss a day, just pick up where you left off.</p>
+      </div>
     </div>
-    <div class="info-card">
+
+    <div class="info-card collapsible" onclick="toggleCard(this)">
       <h3>Progression</h3>
-      <p>With fixed dumbbells (5 lb jumps per dumbbell), stay at your current weight until 5×5 feels solid, even hitting 5×6 or 5×7. Then jump to the next dumbbell. You might only get 5×3 at the new weight. That's fine. Build back to 5×5 over a few sessions.</p>
+      <div class="card-content">
+        <p>Fixed dumbbells go up in 5 lb jumps per hand. That is a bigger leap than barbell training, so do not rush it.</p>
+        <p>Stay at your current weight until 5x5 feels solid, even comfortable. Push for extra reps (5x6 or 5x7) before moving up. When you do make the jump, expect to drop back to 5x3 or 5x4. Build back to 5x5 over a few sessions. This is the normal dumbbell progression cycle.</p>
+      </div>
     </div>
-    <div class="info-card">
-      <h3>Rest Between Sets</h3>
-      <p>90 seconds when weights are light. 3 to 5 minutes as they get heavy. No rush.</p>
-    </div>
-    <div class="info-card">
-      <h3>Warmup</h3>
-      <p>Before each exercise: 1×5 with very light weight, then 1×5 at ~50% of your working weight. Then hit your 5 working sets.</p>
-    </div>
-    <div class="info-card">
-      <h3>Exercise Tips</h3>
-      <ul>
-        <li><strong>Goblet Squat</strong> Hold one dumbbell vertically at your chest. Squat deep.</li>
-        <li><strong>Bench Press</strong> Flat bench, press dumbbells up together.</li>
-        <li><strong>Row</strong> Bent-over, one arm at a time or both. Pull to hip.</li>
-        <li><strong>Romanian Deadlift</strong> Slight knee bend, hinge at hips, feel the hamstrings.</li>
-        <li><strong>Overhead Press</strong> Standing or seated. Press straight up.</li>
-        <li><strong>Floor Press</strong> Lie on the floor, press up. Tricep-focused bench variant.</li>
-      </ul>
-    </div>
-    <div class="info-card">
+
+    <div class="info-card collapsible" onclick="toggleCard(this)">
       <h3>Deload Protocol</h3>
-      <p>If you fail to get 5×5 at a weight for 3 consecutive sessions, drop down 10% and build back up. This is normal and part of the process.</p>
+      <div class="card-content">
+        <p>If you fail to hit 5x5 at a weight for 3 consecutive sessions, drop down 10% and build back up. For example, if you are stuck at 35 lb, go back to 30 lb and work your way up again.</p>
+        <p>This is not failure. This is how strength training works. You will come back stronger. Every serious lifter deloads.</p>
+      </div>
+    </div>
+
+    <div class="info-card collapsible" onclick="toggleCard(this)">
+      <h3>Rest Between Sets</h3>
+      <div class="card-content">
+        <p>90 seconds when weights are light. 3 to 5 minutes as they get heavy. The point is to lift heavy, and that requires recovery between sets. Do not rush it.</p>
+        <p>If you are still breathing hard, you are not ready for the next set. Wait until you feel ready to give a full effort.</p>
+      </div>
+    </div>
+
+    <div class="info-card collapsible" onclick="toggleCard(this)">
+      <h3>Warmup</h3>
+      <div class="card-content">
+        <p>Before each exercise: 1x5 with very light weight, then 1x5 at roughly 50% of your working weight. Then start your 5 working sets.</p>
+        <p>Do not skip warmup sets. They prepare your joints and muscles for heavy loading and help you dial in form before the weight gets serious.</p>
+      </div>
+    </div>
+
+    <div class="info-card collapsible" onclick="toggleCard(this)">
+      <h3>Exercise Guide</h3>
+      <div class="card-content">
+        <p><strong>Goblet Squat</strong> (Legs)</p>
+        <p>Hold one dumbbell vertically at your chest, cupped in both hands. Feet shoulder-width apart, toes slightly out. Squat deep, elbows inside your knees. Drive up through your heels. Keep your chest up the entire time. If your heels come off the ground, work on ankle mobility or place small plates under your heels.</p>
+
+        <p style="margin-top:14px;"><strong>Bench Press</strong> (Push)</p>
+        <p>Lie flat on a bench with a dumbbell in each hand. Press up until arms are extended, then lower until your upper arms are parallel to the floor or slightly below. Keep your shoulder blades pinched together and your feet flat on the floor. Do not bounce the weight off your chest.</p>
+
+        <p style="margin-top:14px;"><strong>Row</strong> (Pull)</p>
+        <p>Bent over at the hips, back flat, one hand on a bench for support. Pull the dumbbell to your hip, not your chest. Squeeze your shoulder blade at the top. Lower under control. If you are using momentum to swing the weight up, it is too heavy.</p>
+
+        <p style="margin-top:14px;"><strong>Romanian Deadlift</strong> (Legs)</p>
+        <p>Stand with dumbbells at your sides. Slight bend in the knees, then hinge at the hips and push your butt back. Lower the dumbbells along your legs until you feel a deep stretch in your hamstrings. Drive your hips forward to stand. Your back stays flat the entire time. This is a hip hinge, not a squat.</p>
+
+        <p style="margin-top:14px;"><strong>Overhead Press</strong> (Push)</p>
+        <p>Standing with dumbbells at shoulder height, palms facing forward. Press straight up until arms are fully extended. Lower under control back to your shoulders. Brace your core and do not lean back. If you have to arch your back to get the weight up, it is too heavy.</p>
+
+        <p style="margin-top:14px;"><strong>Floor Press</strong> (Push)</p>
+        <p>Lie on the floor with knees bent, feet flat. Press dumbbells up just like a bench press. Your upper arms will touch the floor at the bottom of each rep, which limits the range of motion and takes stress off your shoulders. Pause briefly on the floor before each rep. No bouncing.</p>
+      </div>
     </div>`;
 
   html += '<button class="reset-btn" onclick="resetAll()">Reset All Data</button>';
@@ -1967,6 +2076,10 @@ function clearRestTimer() {
 }
 
 // ── Navigation ──
+function toggleCard(el) {
+  el.classList.toggle('open');
+}
+
 function showSection(name, e) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.getElementById(`sec-${name}`).classList.add('active');
