@@ -45,16 +45,17 @@
   "image": "https://dumblifts.com/icons/icon-512.png"
 }
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet"></noscript>
 <style>
   :root {
     --black: #000000;
     --near-black: #070707;
     --dark-teal: #404E4D;
     --orange: #F17300;
-    --gold: #7A8B8B;
-    --gold-dim: rgba(122, 139, 139, 0.15);
-    --gold-mid: rgba(122, 139, 139, 0.35);
+    --steel: #7A8B8B;
+    --steel-dim: rgba(122, 139, 139, 0.15);
+    --steel-mid: rgba(122, 139, 139, 0.35);
     --orange-dim: rgba(241, 115, 0, 0.15);
     --text: #e8e0d0;
     --text-dim: #8a8478;
@@ -112,10 +113,10 @@
     border-bottom: 2px solid transparent;
   }
   .nav button.active {
-    color: var(--gold);
-    border-bottom-color: var(--gold);
+    color: var(--steel);
+    border-bottom-color: var(--steel);
   }
-  .nav button:hover { color: var(--gold); }
+  .nav button:hover { color: var(--steel); }
 
   /* ── Main Content ── */
   .content { padding: 20px; max-width: 500px; margin: 0 auto; }
@@ -126,7 +127,7 @@
     font-size: 1.1rem;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--steel);
     text-align: center;
     margin-bottom: 20px;
   }
@@ -170,9 +171,9 @@
     width: 38px;
     height: 38px;
     border-radius: 50%;
-    border: 1px solid var(--gold-mid);
-    background: var(--gold-dim);
-    color: var(--gold);
+    border: 1px solid var(--steel-mid);
+    background: var(--steel-dim);
+    color: var(--steel);
     font-size: 1.3rem;
     font-weight: 600;
     cursor: pointer;
@@ -183,7 +184,7 @@
     line-height: 1;
   }
   .weight-btn:active {
-    background: var(--gold);
+    background: var(--steel);
     color: var(--black);
     transform: scale(0.92);
   }
@@ -191,7 +192,7 @@
     font-family: 'Oswald', sans-serif;
     font-size: 1.6rem;
     font-weight: 700;
-    color: var(--gold);
+    color: var(--steel);
     min-width: 80px;
     text-align: center;
   }
@@ -286,7 +287,7 @@
     font-family: 'Oswald', sans-serif;
     font-size: 2rem;
     font-weight: 700;
-    color: var(--gold);
+    color: var(--steel);
   }
   .stat-label {
     font-size: 0.7rem;
@@ -307,7 +308,7 @@
   .history-date {
     font-family: 'Oswald', sans-serif;
     font-size: 0.85rem;
-    color: var(--gold);
+    color: var(--steel);
     letter-spacing: 1px;
     margin-bottom: 6px;
   }
@@ -324,7 +325,7 @@
     color: var(--text-dim);
     line-height: 1.6;
   }
-  .history-exercise span { color: var(--gold); font-weight: 500; }
+  .history-exercise span { color: var(--steel); font-weight: 500; }
   .pr-badge {
     font-family: 'Oswald', sans-serif;
     font-size: 0.6rem;
@@ -359,7 +360,7 @@
     font-size: 0.9rem;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--steel);
     margin-bottom: 10px;
   }
   .info-card p, .info-card li {
@@ -383,7 +384,7 @@
     font-size: 0.9rem;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--steel);
     margin-bottom: 14px;
   }
   .progress-chart svg {
@@ -440,7 +441,7 @@
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%) translateY(80px);
-    background: var(--gold);
+    background: var(--steel);
     color: var(--black);
     font-family: 'Oswald', sans-serif;
     font-size: 0.9rem;
@@ -494,7 +495,7 @@
     font-family: 'Oswald', sans-serif;
     font-size: 1.3rem;
     font-weight: 700;
-    color: var(--gold);
+    color: var(--steel);
     letter-spacing: 2px;
   }
   .rest-timer-hint {
@@ -522,12 +523,12 @@
     font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--steel);
   }
   .program-action-btn {
-    background: var(--gold-dim);
-    border: 1px solid var(--gold-mid);
-    color: var(--gold);
+    background: var(--steel-dim);
+    border: 1px solid var(--steel-mid);
+    color: var(--steel);
     font-family: 'Oswald', sans-serif;
     font-size: 0.7rem;
     letter-spacing: 1px;
@@ -539,7 +540,7 @@
     transition: all 0.15s;
   }
   .program-action-btn:active {
-    background: var(--gold);
+    background: var(--steel);
     color: var(--black);
   }
   .program-action-btn.remove {
@@ -559,7 +560,7 @@
     justify-content: space-between;
   }
   .program-card-exercise span {
-    color: var(--gold);
+    color: var(--steel);
     font-weight: 500;
   }
   .balance-check .balance-badges {
@@ -600,8 +601,8 @@
     transition: all 0.2s;
   }
   .add-workout-btn:hover {
-    border-color: var(--gold-mid);
-    color: var(--gold);
+    border-color: var(--steel-mid);
+    color: var(--steel);
   }
   .cancel-btn {
     border-style: solid;
@@ -638,12 +639,12 @@
     font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--steel);
   }
   .edit-back-btn {
     background: none;
     border: none;
-    color: var(--gold);
+    color: var(--steel);
     font-family: 'Oswald', sans-serif;
     font-size: 0.85rem;
     letter-spacing: 1px;
@@ -754,8 +755,8 @@
     text-decoration: none;
   }
   .footer-socials a:hover {
-    border-color: var(--gold-mid);
-    color: var(--gold);
+    border-color: var(--steel-mid);
+    color: var(--steel);
   }
   .footer-socials a svg {
     width: 16px;
@@ -773,7 +774,7 @@
     transition: color 0.2s;
   }
   .footer-email a:hover {
-    color: var(--gold);
+    color: var(--steel);
   }
 
   /* ── Auth Bar ── */
@@ -782,8 +783,8 @@
   }
   .auth-signin-btn {
     background: none;
-    border: 1px solid var(--gold-mid);
-    color: var(--gold);
+    border: 1px solid var(--steel-mid);
+    color: var(--steel);
     font-family: 'Oswald', sans-serif;
     font-size: 0.75rem;
     letter-spacing: 1.5px;
@@ -794,11 +795,11 @@
     transition: all 0.2s;
   }
   .auth-signin-btn:hover {
-    border-color: var(--gold);
+    border-color: var(--steel);
     color: var(--text);
   }
   .auth-signin-btn:active {
-    background: var(--gold);
+    background: var(--steel);
     color: var(--black);
     transform: scale(0.96);
   }
@@ -833,7 +834,7 @@
     transition: color 0.2s;
   }
   .auth-signout-btn:hover {
-    color: var(--gold);
+    color: var(--steel);
   }
 
   /* ── Welcome Overlay ── */
@@ -1047,9 +1048,9 @@
 <div class="rest-timer" id="restTimer" onclick="clearRestTimer()"></div>
 <div class="toast" id="toast"></div>
 
-<script src="https://www.gstatic.com/firebasejs/11.3.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.3.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.3.0/firebase-firestore-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/11.3.0/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/11.3.0/firebase-auth-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/11.3.0/firebase-firestore-compat.js"></script>
 
 <script>
 // ── Firebase Init ──
@@ -1256,7 +1257,7 @@ function renderHistory() {
       <div class="history-type">${entry.type}</div>
       <div class="history-exercise">
         ${entry.exercises.map(e => {
-          const repsStr = e.sets ? ` <span style="color:${e.sets.every(s => s === 5) ? 'var(--gold)' : 'var(--text-dim)'}">(${e.sets.join('/')})</span>` : '';
+          const repsStr = e.sets ? ` <span style="color:${e.sets.every(s => s === 5) ? 'var(--steel)' : 'var(--text-dim)'}">(${e.sets.join('/')})</span>` : '';
           const prBadge = (entry.prs && entry.prs.includes(e.name)) ? '<span class="pr-badge">PR</span>' : '';
           return `${e.name}: <span>${e.weight} ${e.unit}</span>${prBadge}${repsStr}`;
         }).join('<br>')}
@@ -1369,7 +1370,7 @@ function renderStats() {
   let maxHtml = '';
   Object.values(WORKOUTS).forEach(w => {
     w.exercises.forEach(ex => {
-      maxHtml += `<div class="history-exercise" style="padding:4px 0;">${ex.name}: <span style="color:var(--gold);font-weight:600;">${state.weights[ex.id]} ${ex.unit}</span></div>`;
+      maxHtml += `<div class="history-exercise" style="padding:4px 0;">${ex.name}: <span style="color:var(--steel);font-weight:600;">${state.weights[ex.id]} ${ex.unit}</span></div>`;
     });
   });
 
