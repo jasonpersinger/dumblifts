@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DUMBLIFTS: Dumbbell 5×5 Strength Tracker</title>
 <meta name="description" content="Free dumbbell 5×5 workout tracker. Log sets, track progressive overload, and build strength with a simple push/pull/legs program. Works offline. No account required.">
 <meta name="keywords" content="dumbbell workout tracker, 5x5 program, strength training, progressive overload, dumbbell 5x5, workout log, push pull legs, gym tracker">
@@ -64,6 +64,7 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  *:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
 
   body {
     font-family: 'Source Sans 3', sans-serif;
@@ -1046,7 +1047,7 @@
 </footer>
 
 <div class="rest-timer" id="restTimer" onclick="clearRestTimer()"></div>
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script defer src="https://www.gstatic.com/firebasejs/11.3.0/firebase-app-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/11.3.0/firebase-auth-compat.js"></script>
@@ -1219,13 +1220,13 @@ function renderWorkout() {
         <div class="exercise-name">${ex.name}</div>
         <div class="exercise-note">${ex.note}</div>
         <div class="weight-row">
-          <button class="weight-btn" onclick="changeWeight('${ex.id}', -5)">−</button>
+          <button class="weight-btn" onclick="changeWeight('${ex.id}', -5)" aria-label="Decrease ${ex.name} weight">−</button>
           <div class="weight-display">${state.weights[ex.id]}<span class="weight-unit">${ex.unit}</span></div>
-          <button class="weight-btn" onclick="changeWeight('${ex.id}', 5)">+</button>
+          <button class="weight-btn" onclick="changeWeight('${ex.id}', 5)" aria-label="Increase ${ex.name} weight">+</button>
         </div>
         <div class="sets-row">
           ${sets.map((reps, i) => `
-            <button class="set-btn ${reps > 0 ? (reps === 5 ? 'done' : 'done partial') : ''}" onclick="toggleSet('${ex.id}', ${i})">
+            <button class="set-btn ${reps > 0 ? (reps === 5 ? 'done' : 'done partial') : ''}" onclick="toggleSet('${ex.id}', ${i})" aria-label="Set ${i+1} of ${ex.name}, ${reps > 0 ? reps + ' reps done' : 'not started'}">
               <span class="set-num">S${i+1}</span>
               <span class="set-reps">×${reps > 0 ? reps : 5}</span>
             </button>
