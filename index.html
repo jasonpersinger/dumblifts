@@ -325,6 +325,18 @@
     line-height: 1.6;
   }
   .history-exercise span { color: var(--gold); font-weight: 500; }
+  .pr-badge {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--orange);
+    border: 1px solid var(--orange);
+    border-radius: 4px;
+    padding: 1px 5px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
 
   .empty-state {
     text-align: center;
@@ -1232,7 +1244,8 @@ function renderHistory() {
       <div class="history-exercise">
         ${entry.exercises.map(e => {
           const repsStr = e.sets ? ` <span style="color:${e.sets.every(s => s === 5) ? 'var(--gold)' : 'var(--text-dim)'}">(${e.sets.join('/')})</span>` : '';
-          return `${e.name}: <span>${e.weight} ${e.unit}</span>${repsStr}`;
+          const prBadge = (entry.prs && entry.prs.includes(e.name)) ? '<span class="pr-badge">PR</span>' : '';
+          return `${e.name}: <span>${e.weight} ${e.unit}</span>${prBadge}${repsStr}`;
         }).join('<br>')}
       </div>
     </div>`;
@@ -1611,6 +1624,21 @@ function completeWorkout() {
       sets: [...state.currentSets[ex.id]]
     }))
   };
+  // PR detection
+  const prs = [];
+  wo.exercises.forEach(ex => {
+    const currentWeight = state.weights[ex.id];
+    const maxPrevious = Math.max(0, ...state.history
+      .flatMap(h => h.exercises)
+      .filter(e => e.name === ex.name)
+      .map(e => e.weight)
+    );
+    if (currentWeight > maxPrevious && maxPrevious > 0) {
+      prs.push(ex.name);
+    }
+  });
+  if (prs.length) entry.prs = prs;
+
   state.history.push(entry);
   state.totalWorkouts++;
 
@@ -1626,7 +1654,11 @@ function completeWorkout() {
 
   saveState();
   renderWorkout();
-  showToast('Workout logged! 💪');
+  if (prs.length) {
+    showToast('NEW PR: ' + prs.join(', ') + ' 💪');
+  } else {
+    showToast('Workout logged! 💪');
+  }
 }
 
 function resetAll() {
