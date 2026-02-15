@@ -10,8 +10,6 @@
   <g clip-path="url(#circle)">
     <rect width="900" height="900" fill="#000000"/>
 
-    <!-- Thin orange circle border -->
-    <circle cx="450" cy="450" r="432" fill="none" stroke="#F17300" stroke-width="3"/>
 
     <!-- DUMBLIFTS wordmark top -->
     <text x="450" y="120" font-family="Oswald, sans-serif" font-weight="700" font-size="64" fill="#F17300" letter-spacing="5" text-anchor="middle">DUMBLIFTS</text>
