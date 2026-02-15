@@ -16,7 +16,7 @@ DumbLifts is a Progressive Web App (PWA) workout tracker for a dumbbell-based 5Ã
 - **Orange:** #F17300 (primary brand color, completed sets, buttons, logo)
 - **Steel blue-gray:** #7A8B8B (secondary â€” nav, labels, weight displays, accents)
 - **Text:** #e8e0d0 (body text)
-- **Text dim:** #8a8478 (muted/secondary text)
+- **Text dim:** #9a9488 (muted/secondary text)
 - **Card bg:** #0d0d0d
 - **Card border:** #1a1a1a
 

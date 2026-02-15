@@ -58,7 +58,7 @@
     --steel-mid: rgba(122, 139, 139, 0.35);
     --orange-dim: rgba(241, 115, 0, 0.15);
     --text: #e8e0d0;
-    --text-dim: #8a8478;
+    --text-dim: #9a9488;
     --card-bg: #0d0d0d;
     --card-border: #1a1a1a;
   }
@@ -145,6 +145,9 @@
     border-color: var(--orange);
     box-shadow: 0 0 20px rgba(241, 115, 0, 0.08);
   }
+  .exercise-card[data-group="legs"] { border-left: 3px solid #C4A035; }
+  .exercise-card[data-group="push"] { border-left: 3px solid var(--orange); }
+  .exercise-card[data-group="pull"] { border-left: 3px solid var(--steel); }
   .exercise-name {
     font-family: 'Oswald', sans-serif;
     font-size: 1.15rem;
@@ -269,6 +272,11 @@
     transform: scale(0.97);
     box-shadow: 0 2px 10px rgba(241, 115, 0, 0.4);
   }
+  .complete-btn.ready {
+    position: sticky;
+    bottom: 12px;
+    z-index: 50;
+  }
 
   /* ── Stats View ── */
   .stats-grid {
@@ -340,6 +348,43 @@
     vertical-align: middle;
   }
 
+  .history-month-header {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin: 20px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .history-month-header:first-child { margin-top: 0; }
+  .history-month-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--card-border);
+  }
+  .show-more-btn {
+    width: 100%;
+    padding: 12px;
+    border: 1px dashed var(--card-border);
+    border-radius: 10px;
+    background: none;
+    color: var(--text-dim);
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.2s;
+  }
+  .show-more-btn:hover {
+    border-color: var(--steel-mid);
+    color: var(--steel);
+  }
   .empty-state {
     text-align: center;
     color: var(--text-dim);
@@ -458,6 +503,19 @@
     transform: translateX(-50%) translateY(0);
     opacity: 1;
   }
+  .toast-undo {
+    background: none;
+    border: none;
+    color: var(--black);
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-left: 12px;
+    text-decoration: underline;
+  }
 
   /* ── Rest Timer ── */
   .rest-timer {
@@ -563,28 +621,6 @@
   .program-card-exercise span {
     color: var(--steel);
     font-weight: 500;
-  }
-  .balance-check .balance-badges {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .balance-ok {
-    color: #5a9a5a;
-    font-family: 'Oswald', sans-serif;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-  }
-  .balance-warn {
-    color: var(--orange);
-    font-family: 'Oswald', sans-serif;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-  }
-  .balance-warning-text {
-    margin-top: 8px;
-    color: var(--orange) !important;
-    font-size: 0.78rem !important;
   }
   .add-workout-btn {
     width: 100%;
@@ -1136,6 +1172,12 @@ let restTimer = null;
 let restTimeLeft = 0;
 let toastTimer = null;
 
+// ── Undo State ──
+let undoSnapshot = null;
+
+// ── History Display State ──
+let historyShowCount = 10;
+
 // ── Edit Workout State ──
 let editingWorkoutIdx = null;
 let editNewWorkoutId = null;
@@ -1163,8 +1205,10 @@ function renderWorkout() {
   wo.exercises.forEach(ex => {
     const sets = state.currentSets[ex.id];
     const allDone = sets.every(v => v > 0);
+    const exLib = EXERCISE_LIBRARY.find(e => e.id === ex.id);
+    const group = exLib ? exLib.group : '';
     html += `
-      <div class="exercise-card ${allDone ? 'all-done' : ''}">
+      <div class="exercise-card ${allDone ? 'all-done' : ''}" data-group="${group}">
         <div class="exercise-name">${ex.name}</div>
         <div class="exercise-note">${ex.note}</div>
         <div class="weight-row">
@@ -1199,8 +1243,20 @@ function renderHistory() {
     sec.innerHTML = `<div class="empty-state"><div class="icon">🏋️</div>No workouts yet. Go lift something.</div>`;
     return;
   }
+  const reversed = state.history.slice().reverse();
+  const visible = reversed.slice(0, historyShowCount);
   let html = '';
-  state.history.slice().reverse().slice(0, 20).forEach(entry => {
+  let currentMonth = '';
+
+  visible.forEach(entry => {
+    // Parse month from date string (e.g. "Sat, Feb 15, 2026")
+    const parts = entry.date.match(/(\w+)\s+\d+,\s+(\d+)/);
+    const monthKey = parts ? parts[1] + ' ' + parts[2] : '';
+    if (monthKey && monthKey !== currentMonth) {
+      currentMonth = monthKey;
+      html += `<div class="history-month-header">${monthKey}</div>`;
+    }
+
     html += `<div class="history-item">
       <div class="history-date">${entry.date}</div>
       <div class="history-type">${entry.type}</div>
@@ -1213,7 +1269,17 @@ function renderHistory() {
       </div>
     </div>`;
   });
+
+  if (reversed.length > historyShowCount) {
+    html += `<button class="show-more-btn" onclick="showMoreHistory()">Show More (${reversed.length - historyShowCount} remaining)</button>`;
+  }
+
   sec.innerHTML = html;
+}
+
+function showMoreHistory() {
+  historyShowCount += 10;
+  renderHistory();
 }
 
 function renderProgressChart(workoutLabel, exercises, colors, history) {
@@ -1378,6 +1444,19 @@ function renderProgram() {
       wo.exercises.forEach(ex => {
         html += `<div class="program-card-exercise"><span style="color:var(--text-dim);font-weight:400;">${ex.name}</span> <span>${state.weights[ex.id]} ${ex.unit}</span></div>`;
       });
+      // Per-workout balance check
+      const woGroups = new Set();
+      pw.exerciseIds.forEach(id => {
+        const lib = EXERCISE_LIBRARY.find(e => e.id === id);
+        if (lib) woGroups.add(lib.group);
+      });
+      const woPush = woGroups.has('push');
+      const woPull = woGroups.has('pull');
+      const woLegs = woGroups.has('legs');
+      if (!woPush || !woPull || !woLegs) {
+        const missing = [!woPush && 'Push', !woPull && 'Pull', !woLegs && 'Legs'].filter(Boolean);
+        html += `<div style="margin-top:10px;font-size:0.75rem;color:var(--orange);letter-spacing:0.5px;">Missing: ${missing.join(', ')}</div>`;
+      }
     }
     html += '</div>';
   });
@@ -1387,27 +1466,6 @@ function renderProgram() {
     html += `<button class="add-workout-btn" onclick="addWorkout()">+ Add Workout</button>`;
   }
 
-  // Balance check
-  const allExerciseIds = new Set();
-  state.program.forEach(pw => pw.exerciseIds.forEach(id => allExerciseIds.add(id)));
-  const groups = new Set();
-  allExerciseIds.forEach(id => {
-    const lib = EXERCISE_LIBRARY.find(e => e.id === id);
-    if (lib) groups.add(lib.group);
-  });
-  const hasLegs = groups.has('legs');
-  const hasPush = groups.has('push');
-  const hasPull = groups.has('pull');
-
-  html += `<div class="info-card balance-check">
-    <h3>Balance Check</h3>
-    <div class="balance-badges">
-      <span class="${hasPush ? 'balance-ok' : 'balance-warn'}">${hasPush ? '✓' : '✗'} Push</span>
-      <span class="${hasPull ? 'balance-ok' : 'balance-warn'}">${hasPull ? '✓' : '✗'} Pull</span>
-      <span class="${hasLegs ? 'balance-ok' : 'balance-warn'}">${hasLegs ? '✓' : '✗'} Legs</span>
-    </div>
-    ${(!hasLegs || !hasPush || !hasPull) ? '<p class="balance-warning-text">Your program is missing muscle groups. Consider adding exercises for balanced development.</p>' : ''}
-  </div>`;
 
   // Presets
   html += `<div class="info-card">
@@ -1549,6 +1607,9 @@ function changeWeight(exId, delta) {
 }
 
 function completeWorkout() {
+  // Save snapshot for undo
+  undoSnapshot = JSON.parse(JSON.stringify(state));
+
   const wo = WORKOUTS[state.nextWorkout];
   const entry = {
     date: new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }),
@@ -1594,10 +1655,30 @@ function completeWorkout() {
   saveState();
   renderWorkout();
   if (prs.length) {
-    showToast('NEW PR: ' + prs.join(', ') + ' 💪');
+    showUndoToast('NEW PR: ' + prs.join(', ') + ' 💪');
   } else {
-    showToast('Workout logged! 💪');
+    showUndoToast('Workout logged! 💪');
   }
+}
+
+function showUndoToast(msg) {
+  const t = document.getElementById('toast');
+  if (toastTimer) clearTimeout(toastTimer);
+  // msg is always a hardcoded string from our own code, not user input
+  t.innerHTML = msg + ' <button class="toast-undo" onclick="undoComplete()">Undo</button>';
+  t.classList.add('show');
+  toastTimer = setTimeout(() => { t.classList.remove('show'); toastTimer = null; undoSnapshot = null; }, 5000);
+}
+
+function undoComplete() {
+  if (!undoSnapshot) return;
+  state = undoSnapshot;
+  undoSnapshot = null;
+  buildWorkouts();
+  saveState();
+  renderWorkout();
+  if (toastTimer) clearTimeout(toastTimer);
+  showToast('Workout undone');
 }
 
 function resetAll() {
@@ -1863,7 +1944,7 @@ function showSection(name, e) {
   e.currentTarget.classList.add('active');
 
   if (name === 'workout') renderWorkout();
-  if (name === 'history') renderHistory();
+  if (name === 'history') { historyShowCount = 10; renderHistory(); }
   if (name === 'stats') renderStats();
   if (name === 'program') renderProgram();
 }
