@@ -1002,10 +1002,10 @@
 </div>
 
 <div class="nav">
-  <button class="active" onclick="showSection('workout')">Workout</button>
-  <button onclick="showSection('history')">History</button>
-  <button onclick="showSection('stats')">Stats</button>
-  <button onclick="showSection('program')">Program</button>
+  <button class="active" onclick="showSection('workout', event)">Workout</button>
+  <button onclick="showSection('history', event)">History</button>
+  <button onclick="showSection('stats', event)">Stats</button>
+  <button onclick="showSection('program', event)">Program</button>
 </div>
 
 <div class="content">
@@ -1172,6 +1172,7 @@ function saveState() {
 // ── Rest Timer State ──
 let restTimer = null;
 let restTimeLeft = 0;
+let toastTimer = null;
 
 // ── Edit Workout State ──
 let editingWorkoutIdx = null;
@@ -1640,6 +1641,9 @@ function completeWorkout() {
   if (prs.length) entry.prs = prs;
 
   state.history.push(entry);
+  if (state.history.length > 100) {
+    state.history = state.history.slice(-100);
+  }
   state.totalWorkouts++;
 
   // Reset sets
@@ -1771,7 +1775,7 @@ function removeWorkout(idx) {
 }
 
 function restoreDefault() {
-  if (!confirm('Restore default A/B program? This resets your workout configuration but keeps your history.')) return;
+  if (!confirm('Restore default A/B program? This resets your workout configuration and weights but keeps your history.')) return;
 
   state.program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM));
 
@@ -1883,11 +1887,11 @@ function clearRestTimer() {
 }
 
 // ── Navigation ──
-function showSection(name) {
+function showSection(name, e) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.getElementById(`sec-${name}`).classList.add('active');
   document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
-  event.currentTarget.classList.add('active');
+  e.currentTarget.classList.add('active');
 
   if (name === 'workout') renderWorkout();
   if (name === 'history') renderHistory();
@@ -1897,9 +1901,10 @@ function showSection(name) {
 
 function showToast(msg) {
   const t = document.getElementById('toast');
+  if (toastTimer) clearTimeout(toastTimer);
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2200);
+  toastTimer = setTimeout(() => { t.classList.remove('show'); toastTimer = null; }, 2200);
 }
 
 // ── Auth & Sync ──
