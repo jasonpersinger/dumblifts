@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 600" width="1050" height="600">
+  <rect width="1050" height="600" fill="#000000"/>
+  <g transform="translate(160, 190)">
+    <!-- Dumbbell icon -->
+    <rect x="62" y="68" width="70" height="14" rx="7" fill="#F17300"/>
+    <rect x="34" y="42" width="36" height="66" rx="7" fill="#F17300"/>
+    <rect x="14" y="50" width="28" height="50" rx="5" fill="#F17300"/>
+    <rect x="124" y="42" width="36" height="66" rx="7" fill="#F17300"/>
+    <rect x="152" y="50" width="28" height="50" rx="5" fill="#F17300"/>
+    <!-- Divider pipe -->
+    <rect x="208" y="36" width="4" height="78" rx="2" fill="#F17300" opacity="0.4"/>
+    <!-- DUMBLIFTS wordmark -->
+    <text x="240" y="110" font-family="Oswald, sans-serif" font-weight="700" font-size="78" fill="#F17300" letter-spacing="8">DUMBLIFTS</text>
+    <!-- Tagline -->
+    <text x="365" y="160" font-family="Oswald, sans-serif" font-weight="400" font-size="22" fill="#FFFFFF" letter-spacing="5" text-anchor="middle">LIFT STUPID HEAVY</text>
+  </g>
+</svg>
