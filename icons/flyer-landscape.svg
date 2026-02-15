@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2550 3300" width="2550" height="3300">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3300 2550" width="3300" height="2550">
   <!-- Background -->
-  <rect width="2550" height="3300" fill="#000000"/>
+  <rect width="3300" height="2550" fill="#000000"/>
 
-  <!-- Logo: full size, centered -->
-  <g transform="translate(545, 250) scale(2)">
+  <!-- Logo: centered top -->
+  <g transform="translate(914, 100) scale(2)">
     <rect x="62" y="68" width="70" height="14" rx="7" fill="#F17300"/>
     <rect x="34" y="42" width="36" height="66" rx="7" fill="#F17300"/>
     <rect x="14" y="50" width="28" height="50" rx="5" fill="#F17300"/>
@@ -14,30 +14,36 @@
   </g>
 
   <!-- Tagline -->
-  <text x="1275" y="600" font-family="Oswald, sans-serif" font-weight="400" font-size="36" fill="#FFFFFF" letter-spacing="8" text-anchor="middle">LIFT STUPID HEAVY</text>
+  <text x="1650" y="360" font-family="Oswald, sans-serif" font-weight="400" font-size="36" fill="#FFFFFF" letter-spacing="8" text-anchor="middle">LIFT STUPID HEAVY</text>
 
-  <!-- Divider -->
-  <line x1="600" y1="660" x2="1950" y2="660" stroke="#1a1a1a" stroke-width="2"/>
+  <!-- Top divider -->
+  <line x1="400" y1="420" x2="2900" y2="420" stroke="#1a1a1a" stroke-width="2"/>
 
-  <!-- App-focused copy -->
-  <text x="1275" y="790" font-family="Oswald, sans-serif" font-weight="600" font-size="52" fill="#FFFFFF" letter-spacing="2" text-anchor="middle">FREE DUMBBELL WORKOUT TRACKER</text>
-  <text x="1275" y="870" font-family="Source Sans 3, sans-serif" font-weight="500" font-size="38" fill="#d0c8b8" text-anchor="middle">Tap sets. Log weight. Track progress.</text>
-  <text x="1275" y="930" font-family="Source Sans 3, sans-serif" font-weight="500" font-size="38" fill="#d0c8b8" text-anchor="middle">No account needed. Works offline.</text>
+  <!-- Vertical divider between columns -->
+  <line x1="1600" y1="480" x2="1600" y2="1500" stroke="#1a1a1a" stroke-width="1"/>
+
+  <!-- LEFT COLUMN: copy + badges (centered at x=870) -->
+  <text x="870" y="620" font-family="Oswald, sans-serif" font-weight="600" font-size="46" fill="#FFFFFF" letter-spacing="2" text-anchor="middle">FREE DUMBBELL</text>
+  <text x="870" y="680" font-family="Oswald, sans-serif" font-weight="600" font-size="46" fill="#FFFFFF" letter-spacing="2" text-anchor="middle">WORKOUT TRACKER</text>
+
+  <text x="870" y="790" font-family="Source Sans 3, sans-serif" font-weight="500" font-size="34" fill="#d0c8b8" text-anchor="middle">Tap sets. Log weight.</text>
+  <text x="870" y="840" font-family="Source Sans 3, sans-serif" font-weight="500" font-size="34" fill="#d0c8b8" text-anchor="middle">Track progress.</text>
+  <text x="870" y="920" font-family="Source Sans 3, sans-serif" font-weight="500" font-size="34" fill="#d0c8b8" text-anchor="middle">No account needed. Works offline.</text>
 
   <!-- Feature badges -->
   <g>
-    <rect x="755" y="1020" width="260" height="60" rx="30" fill="none" stroke="#F17300" stroke-width="2"/>
-    <text x="885" y="1060" font-family="Oswald, sans-serif" font-weight="600" font-size="30" fill="#F17300" letter-spacing="4" text-anchor="middle">FREE</text>
+    <rect x="460" y="1010" width="240" height="56" rx="28" fill="none" stroke="#F17300" stroke-width="2"/>
+    <text x="580" y="1047" font-family="Oswald, sans-serif" font-weight="600" font-size="28" fill="#F17300" letter-spacing="4" text-anchor="middle">FREE</text>
 
-    <rect x="1075" y="1020" width="260" height="60" rx="30" fill="none" stroke="#7A8B8B" stroke-width="2"/>
-    <text x="1205" y="1060" font-family="Oswald, sans-serif" font-weight="600" font-size="30" fill="#7A8B8B" letter-spacing="4" text-anchor="middle">OFFLINE</text>
+    <rect x="750" y="1010" width="240" height="56" rx="28" fill="none" stroke="#7A8B8B" stroke-width="2"/>
+    <text x="870" y="1047" font-family="Oswald, sans-serif" font-weight="600" font-size="28" fill="#7A8B8B" letter-spacing="4" text-anchor="middle">OFFLINE</text>
 
-    <rect x="1395" y="1020" width="260" height="60" rx="30" fill="none" stroke="#C4A035" stroke-width="2"/>
-    <text x="1525" y="1060" font-family="Oswald, sans-serif" font-weight="600" font-size="30" fill="#C4A035" letter-spacing="4" text-anchor="middle">NO SIGNUP</text>
+    <rect x="1040" y="1010" width="260" height="56" rx="28" fill="none" stroke="#C4A035" stroke-width="2"/>
+    <text x="1170" y="1047" font-family="Oswald, sans-serif" font-weight="600" font-size="28" fill="#C4A035" letter-spacing="4" text-anchor="middle">NO SIGNUP</text>
   </g>
 
-  <!-- QR code -->
-  <g transform="translate(900, 1180) scale(30)">
+  <!-- RIGHT COLUMN: QR code (centered at x=2380) -->
+  <g transform="translate(2055, 480) scale(26)">
     <rect x="0" y="0" width="1" height="1" fill="#F17300"/>
 <rect x="1" y="0" width="1" height="1" fill="#F17300"/>
 <rect x="2" y="0" width="1" height="1" fill="#F17300"/>
@@ -363,35 +369,35 @@
   </g>
 
   <!-- URL below QR -->
-  <text x="1275" y="2100" font-family="Oswald, sans-serif" font-weight="700" font-size="64" fill="#F17300" letter-spacing="6" text-anchor="middle">DUMBLIFTS.COM</text>
+  <text x="2380" y="1280" font-family="Oswald, sans-serif" font-weight="700" font-size="56" fill="#F17300" letter-spacing="6" text-anchor="middle">DUMBLIFTS.COM</text>
 
-  <!-- Divider -->
-  <line x1="600" y1="2200" x2="1950" y2="2200" stroke="#1a1a1a" stroke-width="2"/>
+  <!-- Bottom divider -->
+  <line x1="400" y1="1600" x2="2900" y2="1600" stroke="#1a1a1a" stroke-width="2"/>
 
   <!-- App action words -->
   <g>
-    <text x="735" y="2520" font-family="Oswald, sans-serif" font-weight="700" font-size="220" fill="#F17300" text-anchor="middle">TAP</text>
-    <text x="735" y="2580" font-family="Oswald, sans-serif" font-weight="400" font-size="28" fill="#7A8B8B" letter-spacing="6" text-anchor="middle">SETS</text>
+    <text x="900" y="1880" font-family="Oswald, sans-serif" font-weight="700" font-size="180" fill="#F17300" text-anchor="middle">TAP</text>
+    <text x="900" y="1940" font-family="Oswald, sans-serif" font-weight="400" font-size="26" fill="#7A8B8B" letter-spacing="6" text-anchor="middle">SETS</text>
 
-    <circle cx="1005" cy="2460" r="6" fill="#1a1a1a"/>
+    <circle cx="1275" cy="1820" r="5" fill="#1a1a1a"/>
 
-    <text x="1275" y="2520" font-family="Oswald, sans-serif" font-weight="700" font-size="220" fill="#F17300" text-anchor="middle">LOG</text>
-    <text x="1275" y="2580" font-family="Oswald, sans-serif" font-weight="400" font-size="28" fill="#7A8B8B" letter-spacing="6" text-anchor="middle">WEIGHT</text>
+    <text x="1650" y="1880" font-family="Oswald, sans-serif" font-weight="700" font-size="180" fill="#F17300" text-anchor="middle">LOG</text>
+    <text x="1650" y="1940" font-family="Oswald, sans-serif" font-weight="400" font-size="26" fill="#7A8B8B" letter-spacing="6" text-anchor="middle">WEIGHT</text>
 
-    <circle cx="1545" cy="2460" r="6" fill="#1a1a1a"/>
+    <circle cx="2025" cy="1820" r="5" fill="#1a1a1a"/>
 
-    <text x="1815" y="2520" font-family="Oswald, sans-serif" font-weight="700" font-size="220" fill="#F17300" text-anchor="middle">LIFT</text>
-    <text x="1815" y="2580" font-family="Oswald, sans-serif" font-weight="400" font-size="28" fill="#7A8B8B" letter-spacing="6" text-anchor="middle">HEAVY</text>
+    <text x="2400" y="1880" font-family="Oswald, sans-serif" font-weight="700" font-size="180" fill="#F17300" text-anchor="middle">LIFT</text>
+    <text x="2400" y="1940" font-family="Oswald, sans-serif" font-weight="400" font-size="26" fill="#7A8B8B" letter-spacing="6" text-anchor="middle">HEAVY</text>
   </g>
 
-  <!-- Divider -->
-  <line x1="600" y1="2660" x2="1950" y2="2660" stroke="#1a1a1a" stroke-width="2"/>
+  <!-- Bottom divider -->
+  <line x1="400" y1="2040" x2="2900" y2="2040" stroke="#1a1a1a" stroke-width="2"/>
 
-  <!-- Bottom line -->
-  <text x="1275" y="2780" font-family="Source Sans 3, sans-serif" font-weight="500" font-size="32" fill="#d0c8b8" text-anchor="middle" letter-spacing="2">Scan the code. Start lifting.</text>
+  <!-- Bottom tagline -->
+  <text x="1650" y="2170" font-family="Source Sans 3, sans-serif" font-weight="500" font-size="32" fill="#d0c8b8" text-anchor="middle" letter-spacing="2">Scan the code. Start lifting.</text>
 
   <!-- Dumbbell watermark -->
-  <g transform="translate(1207, 2880) scale(0.6)">
+  <g transform="translate(1582, 2280) scale(0.6)">
     <rect x="62" y="68" width="70" height="14" rx="7" fill="#F17300" opacity="0.25"/>
     <rect x="34" y="42" width="36" height="66" rx="7" fill="#F17300" opacity="0.25"/>
     <rect x="14" y="50" width="28" height="50" rx="5" fill="#F17300" opacity="0.25"/>
