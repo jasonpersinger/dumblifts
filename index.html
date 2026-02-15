@@ -773,6 +773,24 @@
     max-width: 500px;
     margin: 0 auto;
   }
+  .footer-brand {
+    margin-bottom: 16px;
+  }
+  .footer-brand svg {
+    max-width: 160px;
+    width: 100%;
+    height: auto;
+    opacity: 0.35;
+  }
+  .footer-tagline {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    opacity: 0.5;
+    margin-top: 4px;
+  }
   .footer-socials {
     display: flex;
     justify-content: center;
@@ -1006,6 +1024,18 @@
 </div>
 
 <footer class="footer">
+  <div class="footer-brand">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 730 160">
+      <rect x="62" y="68" width="70" height="14" rx="7" fill="#F17300"/>
+      <rect x="34" y="42" width="36" height="66" rx="7" fill="#F17300"/>
+      <rect x="14" y="50" width="28" height="50" rx="5" fill="#F17300"/>
+      <rect x="124" y="42" width="36" height="66" rx="7" fill="#F17300"/>
+      <rect x="152" y="50" width="28" height="50" rx="5" fill="#F17300"/>
+      <rect x="208" y="36" width="4" height="78" rx="2" fill="#F17300" opacity="0.4"/>
+      <text x="240" y="110" font-family="Oswald, sans-serif" font-weight="700" font-size="78" fill="#F17300" letter-spacing="8">DUMBLIFTS</text>
+    </svg>
+    <div class="footer-tagline">Lift Stupid Heavy</div>
+  </div>
   <div class="footer-socials">
     <a href="mailto:jason@dumblifts.com" aria-label="Email">
       <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
