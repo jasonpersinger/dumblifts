@@ -1471,6 +1471,7 @@ function renderProgram() {
   html += `<div class="info-card">
     <h3>Your Data</h3>
     <button class="add-workout-btn" onclick="exportData()" style="margin-top:0;">Export Backup</button>
+    <button class="add-workout-btn" onclick="exportCSV()">Export CSV</button>
     <button class="add-workout-btn" onclick="importData()">Import Backup</button>
   </div>`;
 
@@ -1824,6 +1825,32 @@ function exportData() {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
   showToast('Data exported');
+}
+
+function exportCSV() {
+  if (!state.history.length) {
+    showToast('No workout data to export');
+    return;
+  }
+  const rows = ['Date,Workout,Exercise,Weight,Unit,S1,S2,S3,S4,S5'];
+  state.history.forEach(h => {
+    h.exercises.forEach(ex => {
+      const sets = ex.sets ? ex.sets.join(',') : '5,5,5,5,5';
+      rows.push(`"${h.date}","${h.type}","${ex.name}",${ex.weight},"${ex.unit}",${sets}`);
+    });
+  });
+  const csv = rows.join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const date = new Date().toISOString().slice(0, 10);
+  a.href = url;
+  a.download = `dumblifts-${date}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('CSV exported');
 }
 
 function importData() {
