@@ -234,6 +234,11 @@
     color: var(--black);
     box-shadow: 0 0 12px rgba(241, 115, 0, 0.25);
   }
+  .set-btn.done.partial {
+    background: rgba(241, 115, 0, 0.6);
+    border-color: rgba(241, 115, 0, 0.6);
+    box-shadow: 0 0 8px rgba(241, 115, 0, 0.15);
+  }
   .set-btn:active { transform: scale(0.9); }
 
   /* Complete button */
@@ -1119,6 +1124,15 @@ function defaultState() {
   };
 }
 
+function migrateCurrentSets(data) {
+  if (!data.currentSets) return;
+  Object.keys(data.currentSets).forEach(exId => {
+    data.currentSets[exId] = data.currentSets[exId].map(v =>
+      v === true ? 5 : v === false ? 0 : v
+    );
+  });
+}
+
 function loadState() {
   try {
     const s = localStorage.getItem('dumblifts');
@@ -1128,6 +1142,7 @@ function loadState() {
       if (!parsed.program) {
         parsed.program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM));
       }
+      migrateCurrentSets(parsed);
       return parsed;
     }
   } catch(e) {}
@@ -1164,7 +1179,7 @@ function renderWorkout() {
   // Init current sets if needed
   wo.exercises.forEach(ex => {
     if (!state.currentSets[ex.id] || state.currentSets[ex.id].length !== 5) {
-      state.currentSets[ex.id] = [false, false, false, false, false];
+      state.currentSets[ex.id] = [0, 0, 0, 0, 0];
     }
   });
 
@@ -1172,7 +1187,7 @@ function renderWorkout() {
 
   wo.exercises.forEach(ex => {
     const sets = state.currentSets[ex.id];
-    const allDone = sets.every(Boolean);
+    const allDone = sets.every(v => v > 0);
     html += `
       <div class="exercise-card ${allDone ? 'all-done' : ''}">
         <div class="exercise-name">${ex.name}</div>
@@ -1183,17 +1198,17 @@ function renderWorkout() {
           <button class="weight-btn" onclick="changeWeight('${ex.id}', 5)">+</button>
         </div>
         <div class="sets-row">
-          ${sets.map((done, i) => `
-            <button class="set-btn ${done ? 'done' : ''}" onclick="toggleSet('${ex.id}', ${i})">
+          ${sets.map((reps, i) => `
+            <button class="set-btn ${reps > 0 ? (reps === 5 ? 'done' : 'done partial') : ''}" onclick="toggleSet('${ex.id}', ${i})">
               <span class="set-num">S${i+1}</span>
-              <span class="set-reps">×5</span>
+              <span class="set-reps">×${reps > 0 ? reps : 5}</span>
             </button>
           `).join('')}
         </div>
       </div>`;
   });
 
-  const allComplete = wo.exercises.every(ex => state.currentSets[ex.id].every(Boolean));
+  const allComplete = wo.exercises.every(ex => state.currentSets[ex.id].every(v => v > 0));
   html += `<button class="complete-btn ${allComplete ? 'ready' : ''}"
     onclick="${allComplete ? 'completeWorkout()' : ''}"
     ${allComplete ? '' : 'disabled'}>
@@ -1215,7 +1230,10 @@ function renderHistory() {
       <div class="history-date">${entry.date}</div>
       <div class="history-type">${entry.type}</div>
       <div class="history-exercise">
-        ${entry.exercises.map(e => `${e.name}: <span>${e.weight} ${e.unit}</span>`).join('<br>')}
+        ${entry.exercises.map(e => {
+          const repsStr = e.sets ? ` <span style="color:${e.sets.every(s => s === 5) ? 'var(--gold)' : 'var(--text-dim)'}">(${e.sets.join('/')})</span>` : '';
+          return `${e.name}: <span>${e.weight} ${e.unit}</span>${repsStr}`;
+        }).join('<br>')}
       </div>
     </div>`;
   });
@@ -1558,15 +1576,17 @@ function renderEditWorkout() {
 
 // ── Actions ──
 function toggleSet(exId, setIndex) {
-  const wasComplete = state.currentSets[exId][setIndex];
-  state.currentSets[exId][setIndex] = !wasComplete;
+  const current = state.currentSets[exId][setIndex];
+  // First tap = 5, then cycle down: 4 → 3 → 2 → 1 → 0
+  const next = current === 0 ? 5 : current - 1;
+  state.currentSets[exId][setIndex] = next;
   saveState();
   renderWorkout();
 
-  // Start rest timer only when marking a set DONE (not undoing)
+  // Start rest timer only on initial mark-done (0 → 5)
   // and not when it's the last set of the exercise
-  if (!wasComplete) {
-    const allDone = state.currentSets[exId].every(Boolean);
+  if (current === 0 && next === 5) {
+    const allDone = state.currentSets[exId].every(v => v > 0);
     if (!allDone) {
       startRestTimer(90);
     }
@@ -1587,7 +1607,8 @@ function completeWorkout() {
     exercises: wo.exercises.map(ex => ({
       name: ex.name,
       weight: state.weights[ex.id],
-      unit: ex.unit
+      unit: ex.unit,
+      sets: [...state.currentSets[ex.id]]
     }))
   };
   state.history.push(entry);
@@ -1595,7 +1616,7 @@ function completeWorkout() {
 
   // Reset sets
   wo.exercises.forEach(ex => {
-    state.currentSets[ex.id] = [false, false, false, false, false];
+    state.currentSets[ex.id] = [0, 0, 0, 0, 0];
   });
 
   // Cycle to next workout
@@ -1674,7 +1695,7 @@ function saveEditWorkout() {
 
   // Clear currentSets for this workout's exercises
   editSelectedIds.forEach(eid => {
-    state.currentSets[eid] = [false, false, false, false, false];
+    state.currentSets[eid] = [0, 0, 0, 0, 0];
   });
 
   buildWorkouts();
@@ -1774,6 +1795,7 @@ function importData() {
         }
         if (!confirm('Import data? This will replace your current data.')) return;
         state = data;
+        migrateCurrentSets(state);
         buildWorkouts();
         saveState();
         renderWorkout();
@@ -1897,6 +1919,7 @@ function handleAuthStateChange(user) {
       // Local is fresh — use cloud data
       state = cloudData;
       if (!state.program) state.program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM));
+      migrateCurrentSets(state);
       saveState();
       reRenderAll();
       showToast('Data loaded from cloud');
@@ -1914,6 +1937,7 @@ function handleAuthStateChange(user) {
     if (confirm('Cloud data found (' + cloudData.totalWorkouts + ' workouts). Use cloud data? Cancel to keep local data and overwrite cloud.')) {
       state = cloudData;
       if (!state.program) state.program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM));
+      migrateCurrentSets(state);
       localStorage.setItem('dumblifts', JSON.stringify(state));
       reRenderAll();
       showToast('Cloud data loaded');
