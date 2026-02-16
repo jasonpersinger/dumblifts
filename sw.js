@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dumblifts-v25';
+const CACHE_NAME = 'dumblifts-v27';
 
 // Firebase URLs — bypass cache (Firestore has its own offline persistence)
 const FIREBASE_DOMAINS = [
@@ -21,9 +21,14 @@ const ASSETS = [
 // Install — cache all assets
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(ASSETS))
+      .then(() => self.skipWaiting())
+      .catch(err => {
+        console.error('SW install failed:', err);
+        self.skipWaiting();
+      })
   );
-  self.skipWaiting();
 });
 
 // Activate — clean old caches
@@ -55,8 +60,11 @@ self.addEventListener('fetch', event => {
         return response;
       });
     }).catch(() => {
-      // Offline fallback — return cached index
-      return caches.match('/');
+      // Offline fallback — only return HTML for navigation requests
+      if (event.request.mode === 'navigate') {
+        return caches.match('/');
+      }
+      return new Response('', { status: 503, statusText: 'Offline' });
     })
   );
 });

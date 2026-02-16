@@ -267,15 +267,13 @@
     background: var(--orange);
     color: var(--black);
     box-shadow: 0 4px 20px rgba(241, 115, 0, 0.3);
+    position: sticky;
+    bottom: 12px;
+    z-index: 50;
   }
   .complete-btn.ready:active {
     transform: scale(0.97);
     box-shadow: 0 2px 10px rgba(241, 115, 0, 0.4);
-  }
-  .complete-btn.ready {
-    position: sticky;
-    bottom: 12px;
-    z-index: 50;
   }
 
   /* ── Stats View ── */
@@ -1130,7 +1128,15 @@ const db = firebase.firestore();
 const auth = firebase.auth();
 
 // Offline persistence for Firestore (PWA support)
-db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
+db.enablePersistence({ synchronizeTabs: true }).catch(err => {
+  if (err.code === 'failed-precondition') {
+    console.warn('Firestore persistence unavailable: multiple tabs open');
+  } else if (err.code === 'unimplemented') {
+    console.warn('Firestore persistence not supported in this browser');
+  } else {
+    console.error('Firestore persistence failed:', err);
+  }
+});
 
 function escapeHtml(str) {
   const div = document.createElement('div');
@@ -1141,28 +1147,28 @@ function escapeHtml(str) {
 // ── Exercise Library ──
 const EXERCISE_LIBRARY = [
   // Legs
-  { id: 'goblet_squat', name: 'Goblet Squat', note: 'One dumbbell at chest, squat deep', group: 'legs', defaultWeight: 30, unit: 'lb' },
-  { id: 'db_rdl', name: 'Romanian Deadlift', note: 'Hinge at hips, slight knee bend', group: 'legs', defaultWeight: 30, unit: 'lb ea.' },
-  { id: 'db_lunge', name: 'Lunge', note: 'Step forward, lower back knee', group: 'legs', defaultWeight: 20, unit: 'lb ea.' },
-  { id: 'db_bulgarian', name: 'Bulgarian Split Squat', note: 'Rear foot elevated, squat down', group: 'legs', defaultWeight: 20, unit: 'lb ea.' },
-  { id: 'db_stepup', name: 'Step-Up', note: 'Step onto bench, drive up', group: 'legs', defaultWeight: 20, unit: 'lb ea.' },
-  { id: 'db_sumo', name: 'Sumo Squat', note: 'Wide stance, dumbbell hangs between legs', group: 'legs', defaultWeight: 30, unit: 'lb' },
-  { id: 'db_thruster', name: 'Thruster', note: 'Squat into overhead press, full body', group: 'legs', defaultWeight: 20, unit: 'lb ea.' },
-  { id: 'db_clean_press', name: 'Clean & Press', note: 'Deadlift pull into overhead press', group: 'legs', defaultWeight: 20, unit: 'lb ea.' },
+  { id: 'goblet_squat', name: 'Goblet Squat', note: 'One dumbbell at chest, squat deep', group: 'legs', defaultWeight: 30, defaultWeightKg: 14, unit: 'lb' },
+  { id: 'db_rdl', name: 'Romanian Deadlift', note: 'Hinge at hips, slight knee bend', group: 'legs', defaultWeight: 30, defaultWeightKg: 14, unit: 'lb ea.' },
+  { id: 'db_lunge', name: 'Lunge', note: 'Step forward, lower back knee', group: 'legs', defaultWeight: 20, defaultWeightKg: 9, unit: 'lb ea.' },
+  { id: 'db_bulgarian', name: 'Bulgarian Split Squat', note: 'Rear foot elevated, squat down', group: 'legs', defaultWeight: 20, defaultWeightKg: 9, unit: 'lb ea.' },
+  { id: 'db_stepup', name: 'Step-Up', note: 'Step onto bench, drive up', group: 'legs', defaultWeight: 20, defaultWeightKg: 9, unit: 'lb ea.' },
+  { id: 'db_sumo', name: 'Sumo Squat', note: 'Wide stance, dumbbell hangs between legs', group: 'legs', defaultWeight: 30, defaultWeightKg: 14, unit: 'lb' },
+  { id: 'db_thruster', name: 'Thruster', note: 'Squat into overhead press, full body', group: 'legs', defaultWeight: 20, defaultWeightKg: 9, unit: 'lb ea.' },
+  { id: 'db_clean_press', name: 'Clean & Press', note: 'Deadlift pull into overhead press', group: 'legs', defaultWeight: 20, defaultWeightKg: 9, unit: 'lb ea.' },
   // Push
-  { id: 'db_bench', name: 'Bench Press', note: 'Flat bench, press up', group: 'push', defaultWeight: 20, unit: 'lb ea.' },
-  { id: 'db_floor', name: 'Floor Press', note: 'Lie on floor, press up', group: 'push', defaultWeight: 20, unit: 'lb ea.' },
-  { id: 'db_ohp', name: 'Overhead Press', note: 'Standing, press straight up', group: 'push', defaultWeight: 15, unit: 'lb ea.' },
-  { id: 'db_incline', name: 'Incline Press', note: 'Incline bench, press up at angle', group: 'push', defaultWeight: 20, unit: 'lb ea.' },
-  { id: 'db_arnold', name: 'Arnold Press', note: 'Rotate palms as you press up', group: 'push', defaultWeight: 15, unit: 'lb ea.' },
-  { id: 'db_lateral', name: 'Lateral Raise', note: 'Raise out to sides, slight bend', group: 'push', defaultWeight: 10, unit: 'lb ea.' },
+  { id: 'db_bench', name: 'Bench Press', note: 'Flat bench, press up', group: 'push', defaultWeight: 20, defaultWeightKg: 9, unit: 'lb ea.' },
+  { id: 'db_floor', name: 'Floor Press', note: 'Lie on floor, press up', group: 'push', defaultWeight: 20, defaultWeightKg: 9, unit: 'lb ea.' },
+  { id: 'db_ohp', name: 'Overhead Press', note: 'Standing, press straight up', group: 'push', defaultWeight: 15, defaultWeightKg: 7, unit: 'lb ea.' },
+  { id: 'db_incline', name: 'Incline Press', note: 'Incline bench, press up at angle', group: 'push', defaultWeight: 20, defaultWeightKg: 9, unit: 'lb ea.' },
+  { id: 'db_arnold', name: 'Arnold Press', note: 'Rotate palms as you press up', group: 'push', defaultWeight: 15, defaultWeightKg: 7, unit: 'lb ea.' },
+  { id: 'db_lateral', name: 'Lateral Raise', note: 'Raise out to sides, slight bend', group: 'push', defaultWeight: 10, defaultWeightKg: 4.5, unit: 'lb ea.' },
   // Pull
-  { id: 'db_row', name: 'Row', note: 'Bent-over, pull to hip', group: 'pull', defaultWeight: 20, unit: 'lb ea.' },
-  { id: 'db_reverse_fly', name: 'Reverse Fly', note: 'Bent-over, fly out to sides', group: 'pull', defaultWeight: 10, unit: 'lb ea.' },
-  { id: 'db_shrug', name: 'Shrug', note: 'Shrug shoulders up, hold at top', group: 'pull', defaultWeight: 25, unit: 'lb ea.' },
-  { id: 'db_pullover', name: 'Pullover', note: 'Lie on bench, arc dumbbell over head', group: 'pull', defaultWeight: 20, unit: 'lb' },
-  { id: 'db_curl', name: 'Curl', note: 'Curl up, squeeze at top', group: 'pull', defaultWeight: 15, unit: 'lb ea.' },
-  { id: 'db_hammer', name: 'Hammer Curl', note: 'Neutral grip, curl up', group: 'pull', defaultWeight: 15, unit: 'lb ea.' }
+  { id: 'db_row', name: 'Row', note: 'Bent-over, pull to hip', group: 'pull', defaultWeight: 20, defaultWeightKg: 9, unit: 'lb ea.' },
+  { id: 'db_reverse_fly', name: 'Reverse Fly', note: 'Bent-over, fly out to sides', group: 'pull', defaultWeight: 10, defaultWeightKg: 4.5, unit: 'lb ea.' },
+  { id: 'db_shrug', name: 'Shrug', note: 'Shrug shoulders up, hold at top', group: 'pull', defaultWeight: 25, defaultWeightKg: 11, unit: 'lb ea.' },
+  { id: 'db_pullover', name: 'Pullover', note: 'Lie on bench, arc dumbbell over head', group: 'pull', defaultWeight: 20, defaultWeightKg: 9, unit: 'lb' },
+  { id: 'db_curl', name: 'Curl', note: 'Curl up, squeeze at top', group: 'pull', defaultWeight: 15, defaultWeightKg: 7, unit: 'lb ea.' },
+  { id: 'db_hammer', name: 'Hammer Curl', note: 'Neutral grip, curl up', group: 'pull', defaultWeight: 15, defaultWeightKg: 7, unit: 'lb ea.' }
 ];
 
 const DEFAULT_PROGRAM = [
@@ -1186,6 +1192,49 @@ function buildWorkouts() {
   });
 }
 
+// ── Unit System Helpers ──
+function getUnit(exerciseId) {
+  const lib = EXERCISE_LIBRARY.find(e => e.id === exerciseId);
+  const isEach = lib && lib.unit.includes('ea.');
+  if (state.unitSystem === 'metric') {
+    return isEach ? 'kg ea.' : 'kg';
+  }
+  return isEach ? 'lb ea.' : 'lb';
+}
+
+function getWeightIncrement() {
+  return state.unitSystem === 'metric' ? 2.5 : 5;
+}
+
+function getMinWeight() {
+  return state.unitSystem === 'metric' ? 2.5 : 5;
+}
+
+function convertWeight(weight, fromSystem, toSystem) {
+  if (fromSystem === toSystem) return weight;
+  if (fromSystem === 'imperial' && toSystem === 'metric') {
+    return Math.round(weight * 0.453592 * 2) / 2; // round to nearest 0.5 kg
+  }
+  // metric → imperial: round to nearest 5 lb
+  return Math.round(weight * 2.20462 / 5) * 5;
+}
+
+function toggleUnitSystem() {
+  const from = state.unitSystem;
+  const to = from === 'imperial' ? 'metric' : 'imperial';
+  Object.keys(state.weights).forEach(eid => {
+    state.weights[eid] = convertWeight(state.weights[eid], from, to);
+  });
+  state.unitSystem = to;
+  saveState();
+  buildWorkouts();
+  renderWorkout();
+  renderHistory();
+  renderStats();
+  renderProgram();
+  showToast('Switched to ' + (to === 'metric' ? 'kg' : 'lb'));
+}
+
 // ── State ──
 function defaultState() {
   const program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM));
@@ -1202,7 +1251,8 @@ function defaultState() {
     currentSets: {},
     history: [],
     totalWorkouts: 0,
-    program
+    program,
+    unitSystem: 'imperial'
   };
 }
 
@@ -1224,10 +1274,14 @@ function loadState() {
       if (!parsed.program) {
         parsed.program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM));
       }
+      if (!parsed.unitSystem) parsed.unitSystem = 'imperial';
       migrateCurrentSets(parsed);
       return parsed;
     }
-  } catch(e) {}
+  } catch(e) {
+    console.error('Failed to load saved data:', e);
+    setTimeout(() => showToast('Could not load saved data'), 500);
+  }
   return defaultState();
 }
 
@@ -1238,7 +1292,8 @@ function saveState() {
   try {
     localStorage.setItem('dumblifts', JSON.stringify(state));
   } catch (e) {
-    console.log('localStorage save failed:', e);
+    console.error('localStorage save failed:', e);
+    showToast('Save failed — storage may be full');
   }
   syncToFirestore();
 }
@@ -1288,9 +1343,9 @@ function renderWorkout() {
         <div class="exercise-name">${ex.name}</div>
         <div class="exercise-note">${ex.note}</div>
         <div class="weight-row">
-          <button class="weight-btn" onclick="changeWeight('${ex.id}', -5)" aria-label="Decrease ${ex.name} weight">−</button>
-          <div class="weight-display">${state.weights[ex.id]}<span class="weight-unit">${ex.unit}</span></div>
-          <button class="weight-btn" onclick="changeWeight('${ex.id}', 5)" aria-label="Increase ${ex.name} weight">+</button>
+          <button class="weight-btn" onclick="changeWeight('${ex.id}', -1)" aria-label="Decrease ${ex.name} weight">−</button>
+          <div class="weight-display">${state.weights[ex.id]}<span class="weight-unit">${getUnit(ex.id)}</span></div>
+          <button class="weight-btn" onclick="changeWeight('${ex.id}', 1)" aria-label="Increase ${ex.name} weight">+</button>
         </div>
         <div class="sets-row">
           ${sets.map((reps, i) => `
@@ -1340,7 +1395,7 @@ function renderHistory() {
         ${entry.exercises.map(e => {
           const repsStr = e.sets ? ` <span style="color:${e.sets.every(s => s === 5) ? 'var(--steel)' : 'var(--text-dim)'}">(${e.sets.join('/')})</span>` : '';
           const prBadge = (entry.prs && entry.prs.includes(e.name)) ? '<span class="pr-badge">PR</span>' : '';
-          return `${e.name}: <span>${e.weight} ${e.unit}</span>${prBadge}${repsStr}`;
+          return `${escapeHtml(e.name)}: <span>${escapeHtml(String(e.weight))} ${escapeHtml(e.unit)}</span>${prBadge}${repsStr}`;
         }).join('<br>')}
       </div>
     </div>`;
@@ -1461,7 +1516,7 @@ function renderStats() {
   let maxHtml = '';
   Object.values(WORKOUTS).forEach(w => {
     w.exercises.forEach(ex => {
-      maxHtml += `<div class="history-exercise" style="padding:4px 0;">${ex.name}: <span style="color:var(--steel);font-weight:600;">${state.weights[ex.id]} ${ex.unit}</span></div>`;
+      maxHtml += `<div class="history-exercise" style="padding:4px 0;">${ex.name}: <span style="color:var(--steel);font-weight:600;">${state.weights[ex.id]} ${getUnit(ex.id)}</span></div>`;
     });
   });
 
@@ -1518,7 +1573,7 @@ function renderProgram() {
       </div>`;
     if (wo) {
       wo.exercises.forEach(ex => {
-        html += `<div class="program-card-exercise"><span style="color:var(--text-dim);font-weight:400;">${ex.name}</span> <span>${state.weights[ex.id]} ${ex.unit}</span></div>`;
+        html += `<div class="program-card-exercise"><span style="color:var(--text-dim);font-weight:400;">${ex.name}</span> <span>${state.weights[ex.id]} ${getUnit(ex.id)}</span></div>`;
       });
       // Per-workout balance check
       const woGroups = new Set();
@@ -1542,6 +1597,17 @@ function renderProgram() {
     html += `<button class="add-workout-btn" onclick="addWorkout()">+ Add Workout</button>`;
   }
 
+
+  // Settings
+  html += `<div class="info-card">
+    <h3>Settings</h3>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;">
+      <span>Weight Units</span>
+      <button class="add-workout-btn" onclick="toggleUnitSystem()" style="margin:0;width:auto;padding:8px 16px;">
+        ${state.unitSystem === 'imperial' ? 'lb → Switch to kg' : 'kg → Switch to lb'}
+      </button>
+    </div>
+  </div>`;
 
   // Presets
   html += `<div class="info-card">
@@ -1750,7 +1816,9 @@ function toggleSet(exId, setIndex) {
 }
 
 function changeWeight(exId, delta) {
-  state.weights[exId] = Math.max(5, state.weights[exId] + delta);
+  const inc = getWeightIncrement();
+  const d = delta > 0 ? inc : -inc;
+  state.weights[exId] = Math.max(getMinWeight(), state.weights[exId] + d);
   saveState();
   renderWorkout();
 }
@@ -1766,7 +1834,7 @@ function completeWorkout() {
     exercises: wo.exercises.map(ex => ({
       name: ex.name,
       weight: state.weights[ex.id],
-      unit: ex.unit,
+      unit: getUnit(ex.id),
       sets: [...state.currentSets[ex.id]]
     }))
   };
@@ -1890,7 +1958,7 @@ function saveEditWorkout() {
   editSelectedIds.forEach(eid => {
     if (state.weights[eid] === undefined) {
       const lib = EXERCISE_LIBRARY.find(e => e.id === eid);
-      if (lib) state.weights[eid] = lib.defaultWeight;
+      if (lib) state.weights[eid] = state.unitSystem === 'metric' ? lib.defaultWeightKg : lib.defaultWeight;
     }
   });
 
@@ -1948,7 +2016,7 @@ function restoreDefault() {
   state.program.forEach(pw => {
     pw.exerciseIds.forEach(eid => {
       const lib = EXERCISE_LIBRARY.find(e => e.id === eid);
-      if (lib) state.weights[eid] = lib.defaultWeight;
+      if (lib) state.weights[eid] = state.unitSystem === 'metric' ? lib.defaultWeightKg : lib.defaultWeight;
     });
   });
 
@@ -2030,6 +2098,8 @@ function importData() {
         }
         if (!confirm('Import data? This will replace your current data.')) return;
         state = data;
+        if (!state.unitSystem) state.unitSystem = 'imperial';
+        if (state.history.length > 100) state.history = state.history.slice(-100);
         migrateCurrentSets(state);
         buildWorkouts();
         saveState();
@@ -2121,7 +2191,10 @@ function syncToFirestore() {
     db.collection('users').doc(uid).set({
       ...state,
       lastModified: firebase.firestore.FieldValue.serverTimestamp()
-    }).catch(err => console.log('Firestore sync error:', err));
+    }).catch(err => {
+      console.error('Firestore sync error:', err);
+      showToast('Cloud sync failed');
+    });
   }, 300);
 }
 
@@ -2159,6 +2232,7 @@ function handleAuthStateChange(user) {
       // Local is fresh — use cloud data
       state = cloudData;
       if (!state.program) state.program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM));
+      if (!state.unitSystem) state.unitSystem = 'imperial';
       migrateCurrentSets(state);
       saveState();
       reRenderAll();
@@ -2177,6 +2251,7 @@ function handleAuthStateChange(user) {
     if (confirm('Cloud data found (' + cloudData.totalWorkouts + ' workouts). Use cloud data? Cancel to keep local data and overwrite cloud.')) {
       state = cloudData;
       if (!state.program) state.program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM));
+      if (!state.unitSystem) state.unitSystem = 'imperial';
       migrateCurrentSets(state);
       localStorage.setItem('dumblifts', JSON.stringify(state));
       reRenderAll();
@@ -2185,7 +2260,10 @@ function handleAuthStateChange(user) {
       syncToFirestore();
       showToast('Local data kept');
     }
-  }).catch(err => console.log('Firestore load error:', err));
+  }).catch(err => {
+    console.error('Failed to load cloud data:', err);
+    showToast('Could not load cloud data');
+  });
 }
 
 function renderAuthBar() {
@@ -2193,7 +2271,7 @@ function renderAuthBar() {
   if (!bar) return;
   const user = auth.currentUser;
   if (user) {
-    const photo = user.photoURL ? `<img class="auth-user-photo" src="${user.photoURL}" alt="" referrerpolicy="no-referrer">` : '';
+    const photo = user.photoURL ? `<img class="auth-user-photo" src="${escapeHtml(user.photoURL)}" alt="" referrerpolicy="no-referrer">` : '';
     const name = escapeHtml(user.displayName || user.email || '');
     bar.innerHTML = `<div class="auth-user-info">
       ${photo}
@@ -2227,6 +2305,9 @@ function signOutUser() {
   auth.signOut().then(() => {
     renderAuthBar();
     showToast('Signed out');
+  }).catch(err => {
+    console.error('Sign out failed:', err);
+    showToast('Sign out failed');
   });
 }
 
@@ -2235,12 +2316,14 @@ auth.onAuthStateChanged(handleAuthStateChange);
 // ── Welcome Overlay ──
 function dismissWelcome() {
   document.getElementById('welcomeOverlay').style.display = 'none';
-  localStorage.setItem('dumblifts-welcomed', '1');
+  try { localStorage.setItem('dumblifts-welcomed', '1'); } catch(e) {}
 }
 
-if (!localStorage.getItem('dumblifts-welcomed')) {
-  document.getElementById('welcomeOverlay').style.display = 'flex';
-}
+try {
+  if (!localStorage.getItem('dumblifts-welcomed')) {
+    document.getElementById('welcomeOverlay').style.display = 'flex';
+  }
+} catch(e) {}
 
 // ── Init ──
 renderWorkout();
